@@ -23,6 +23,8 @@ public class App extends PApplet {
     private Component appController; // todo event handler for play pause rewind etc..
     private View currentlyFocused = null;
 
+    private boolean showUI = false;
+
     /**
      * Starts up the app
      *
@@ -38,6 +40,7 @@ public class App extends PApplet {
         initDataStructures();
 
         fullScreen();
+        pixelDensity(2);
     }
 
     private void initDataStructures() {
@@ -65,7 +68,7 @@ public class App extends PApplet {
     @Override
     public void draw() {
         // handle background
-        // ..
+        background(0);
 
         // handle play/pause state
 
@@ -74,12 +77,18 @@ public class App extends PApplet {
             root.draw();
         }
 
+        if (!showUI) return;
         // handle processing UI's
         for (RootNode root : roots) {
             root.getProcessingView().draw();
         }
 
         // handle render graph preview if necessary
+    }
+
+    @Override
+    public void keyTyped() {
+        if (key == 'm') showUI = !showUI;
     }
 
     @Override

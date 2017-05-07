@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * View inclusive event handler for mouse events to represent a processing UI element.
  */
 public abstract class View implements MouseObserver {
-    private App context;
+    protected App context;
     private ArrayList<View> children;
     private int width;
     private int height;
@@ -116,7 +116,7 @@ public abstract class View implements MouseObserver {
 
     @Override
     public boolean mouseClicked(int x, int y) {
-        if (this.x <= x && this.width >= x && this.y <= y && this.height >= y) {
+        if (this.x <= x && this.x + this.width >= x && this.y <= y && this.y + this.height >= y) {
             // notify children
             for (int i = children.size() - 1; i >= 0; i--) {
                 View child = children.get(i);
