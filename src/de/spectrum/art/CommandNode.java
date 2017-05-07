@@ -1,4 +1,4 @@
-package art;
+package de.spectrum.art;
 
 /**
  * Created by Giorgio on 03.05.17.

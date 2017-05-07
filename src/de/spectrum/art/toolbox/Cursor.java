@@ -1,4 +1,4 @@
-package art.toolbox;
+package de.spectrum.art.toolbox;
 
 /**
  * Created by Giorgio on 03.05.17.
