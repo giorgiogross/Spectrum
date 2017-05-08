@@ -2,11 +2,13 @@ package de.spectrum;
 
 import de.spectrum.art.RootNode;
 import de.spectrum.gui.MouseObserver;
+import de.spectrum.gui.OnFocusChangedListener;
+import de.spectrum.gui.java.AppController;
 import de.spectrum.gui.java.Component;
-import de.spectrum.gui.processing.View;
 import processing.core.PApplet;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 
 /**
@@ -20,8 +22,8 @@ public class App extends PApplet {
      * Retain a reference to all data structures
      */
     private ArrayList<RootNode> roots;
+    private ArrayList<OnFocusChangedListener> focusChangedListeners;
     private Component appController; // todo event handler for play pause rewind etc..
-    private View currentlyFocused = null;
 
     private boolean showUI = false;
 
@@ -30,10 +32,9 @@ public class App extends PApplet {
      *
      * @param args arguments
      */
-    public static void main (String[] args) {
+    public static void main(String[] args) {
         PApplet.main("de.spectrum.App", args);
     }
-
 
     @Override
     public void settings() {
@@ -45,24 +46,14 @@ public class App extends PApplet {
 
     private void initDataStructures() {
         roots = new ArrayList<RootNode>();
+        focusChangedListeners = new ArrayList<OnFocusChangedListener>();
+
+        appController = new AppController(getControlMenuFrame());
     }
 
     @Override
     public void setup() {
         background(0);
-
-        /*final JFrame frame = new JFrame("TitleLessJFrame");
-        frame.getContentPane().add(new JLabel(" HEY!!!"));
-        frame.addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-                frame.setShape(new RoundRectangle2D.Double(0, 0, frame.getWidth(), frame.getHeight(), 80, 80));
-            }
-        });
-        frame.setUndecorated(true);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 200);
-        frame.setVisible(true);*/
     }
 
     @Override
@@ -77,10 +68,10 @@ public class App extends PApplet {
             root.draw();
         }
 
-        if (!showUI) return;
+        if (!showUI) return; // for performance reasons. App will still work without this line
         // handle processing UI's
         for (RootNode root : roots) {
-            root.getProcessingView().draw();
+            root.drawUI();
         }
 
         // handle render graph preview if necessary
@@ -89,31 +80,48 @@ public class App extends PApplet {
     @Override
     public void keyTyped() {
         if (key == 'm') showUI = !showUI;
+
+        appController.setFrameVisibility(showUI);
+
+        for (RootNode root : roots) {
+            if (!showUI) {
+                root.setChildNodeVisibility(false);
+                root.getMenuView().setFrameVisibility(false);
+            } else {
+                root.getProcessingView().setVisible(true);
+            }
+        }
+
+        // remove all focus states
+        for (OnFocusChangedListener listener : focusChangedListeners)
+            listener.onFocusChanged(null);
     }
 
     @Override
     public void mouseClicked() {
         int clickedNum = 0;
 
-        for(RootNode root : roots) {
+        for (RootNode root : roots) {
             for (MouseObserver observer : root.getMouseObservers()) {
                 if (observer.mouseClicked(mouseX, mouseY)) clickedNum++;
             }
         }
 
-        if(clickedNum == 0) {
+        if (clickedNum == 0) {
             // no view was clicked. Add a new root
             RootNode mRoot = new RootNode(mouseX, mouseY, this);
+            mRoot.getProcessingView().setVisible(showUI);
             roots.add(mRoot);
         }
     }
 
-    public void setFocusedView(View v) {
-        if(currentlyFocused != null) {
-            currentlyFocused.setFocused(false);
-        }
-        v.setFocused(true);
-        this.currentlyFocused = v;
+    public void addOnFocusChangedListener(OnFocusChangedListener listener) {
+        focusChangedListeners.add(listener);
+    }
+
+    public void setFocusedComponent(Component c) {
+        for (OnFocusChangedListener listener : focusChangedListeners)
+            listener.onFocusChanged(c);
     }
 
     /**
@@ -127,11 +135,35 @@ public class App extends PApplet {
     }
 
     public JFrame getRootMenuFrame() {
-        return null;
+        final JFrame frame = new JFrame("Root Node Menu");
+        frame.setUndecorated(true);
+        frame.setLocationRelativeTo(null);
+        frame.setSize(300, 30);
+        frame.setFocusable(false);
+        frame.setFocusableWindowState(false);
+        frame.setAlwaysOnTop(true);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setVisible(false);
+
+        return frame;
     }
 
     public JFrame getControlMenuFrame() {
-        return null;
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        double width = screenSize.getWidth();
+        double height = screenSize.getHeight();
+
+        final JFrame frame = new JFrame("Spectrum Controller");
+        frame.setUndecorated(true);
+        frame.setLocation(0, (int) (height - 40));
+        frame.setSize((int) width, 40);
+        frame.setFocusable(false);
+        frame.setFocusableWindowState(false);
+        frame.setAlwaysOnTop(true);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setVisible(showUI);
+
+        return frame;
     }
 
 }

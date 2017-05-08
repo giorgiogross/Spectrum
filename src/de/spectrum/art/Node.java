@@ -26,6 +26,7 @@ public abstract class Node {
 
     private Component menuView;
     private Component settingsView;
+    private View settingsEditorView;
     private View processingView;
 
     private ArrayList<MouseObserver> mouseObservers;
@@ -47,7 +48,7 @@ public abstract class Node {
     /**
      * All next nodes after this node in the render graph
      */
-    private ArrayList<Node> ptrNext;
+    protected ArrayList<Node> ptrNext;
 
     public Node(RootNode root, App context) {
         this.mouseObservers = new ArrayList<MouseObserver>();
@@ -76,8 +77,39 @@ public abstract class Node {
      */
     protected abstract void render();
 
+    /**
+     * Adds a new node to the child nodes array
+     * @param next the new child node to be added
+     */
     public void addNextNode(Node next) {
         this.ptrNext.add(next);
+    }
+
+    /**
+     * Updates the visibility of this node and of all child nodes
+     * @param isVisible the new visibility state
+     */
+    public void setChildNodeVisibility(boolean isVisible) {
+        // update own visibility
+        getProcessingView().setVisible(isVisible);
+
+        // tell child nodes to update their visibility
+        for(Node n : ptrNext) {
+            n.setChildNodeVisibility(isVisible);
+        }
+    }
+
+    /**
+     * Draws the processing ui and tells all child nodes to draw their UI. This also pays respect to the visibility of
+     * the UI components. For rendering, the view of each node's UI view will be called.
+     */
+    public void drawUI () {
+        getProcessingView().draw();
+
+        for(Node n : ptrNext) {
+            // todo draw connection arrows between these views here if they are visible
+            n.drawUI();
+        }
     }
 
     @Nullable
@@ -96,6 +128,15 @@ public abstract class Node {
 
     protected void setSettingsView(Component settingsView) {
         this.settingsView = settingsView;
+    }
+
+    @Nullable
+    public View getSettingsEditorView() {
+        return settingsEditorView;
+    }
+
+    protected void sSettingsEditorView(View settingsEditorView) {
+        this.settingsEditorView = settingsEditorView;
     }
 
     @Nullable

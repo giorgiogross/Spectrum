@@ -7,14 +7,21 @@ import javax.swing.*;
  * of the component can be read by the client without needing to know what UI this component actually represents.
  */
 public class Component {
-    protected JPanel ui;
+    protected JFrame ui;
 
-    public Component () {
-        ui = new JPanel();
+    public Component() {
     }
 
-    public JPanel getView() {
+    public Component(JFrame ui) {
+        this.ui = ui;
+    }
+
+    public JFrame getView() {
         return ui;
+    }
+
+    public void setFrameVisibility(boolean isVisible) {
+        if (ui != null) ui.setVisible(isVisible);
     }
 
 }

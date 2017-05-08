@@ -2,14 +2,15 @@ package de.spectrum.gui.processing;
 
 import de.spectrum.App;
 import de.spectrum.gui.MouseObserver;
-import processing.core.PApplet;
+import de.spectrum.gui.OnFocusChangedListener;
+import de.spectrum.gui.java.Component;
 
 import java.util.ArrayList;
 
 /**
  * View inclusive event handler for mouse events to represent a processing UI element.
  */
-public abstract class View implements MouseObserver {
+public abstract class View extends Component implements MouseObserver {
     protected App context;
     private ArrayList<View> children;
     private int width;
@@ -82,12 +83,20 @@ public abstract class View implements MouseObserver {
         return height;
     }
 
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
     public int getX() {
         return x;
     }
 
-    public int getY() {
-        return y;
+    public void setX(int x) {
+        this.x = x;
     }
 
     public boolean isFocused() {
@@ -116,7 +125,7 @@ public abstract class View implements MouseObserver {
 
     @Override
     public boolean mouseClicked(int x, int y) {
-        if (this.x <= x && this.x + this.width >= x && this.y <= y && this.y + this.height >= y) {
+        if (this.x <= x && this.x + this.width >= x && this.y <= y && this.y + this.height >= y && isVisible) {
             // notify children
             for (int i = children.size() - 1; i >= 0; i--) {
                 View child = children.get(i);
