@@ -3,6 +3,7 @@ package de.spectrum;
 import de.spectrum.art.RootNode;
 import de.spectrum.gui.MouseObserver;
 import de.spectrum.gui.OnFocusChangedListener;
+import de.spectrum.gui.OnMenuActionListener;
 import de.spectrum.gui.java.AppController;
 import de.spectrum.gui.java.Component;
 import processing.core.PApplet;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
  *
  * @author Giorgio
  */
-public class App extends PApplet {
+public class App extends PApplet implements OnMenuActionListener {
     /**
      * Retain a reference to all data structures
      */
@@ -166,4 +167,64 @@ public class App extends PApplet {
         return frame;
     }
 
+    @Override
+    public void onRevertOneFrame() {
+        for (RootNode root : roots)
+            root.decCurrentFrame();
+    }
+
+    @Override
+    public void onRevertOneFrame(RootNode rootNode) {
+        rootNode.decCurrentFrame();
+    }
+
+    @Override
+    public void onPlay() {
+
+    }
+
+    @Override
+    public void onPlay(RootNode rootNode) {
+
+    }
+
+    @Override
+    public void onPause() {
+
+    }
+
+    @Override
+    public void onPause(RootNode rootNode) {
+
+    }
+
+    @Override
+    public void onSetFPS(int newFPS) {
+
+    }
+
+    @Override
+    public void onSetFrameNumber(int num) {
+
+    }
+
+    @Override
+    public void onExport() {
+
+    }
+
+    @Override
+    public void onSafe() {
+
+    }
+
+    @Override
+    public void onEditSettings() {
+
+    }
+
+    @Override
+    public void onEditSettings(RootNode node) {
+
+    }
 }

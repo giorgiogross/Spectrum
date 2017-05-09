@@ -26,16 +26,17 @@ public abstract class Node {
 
     private Component menuView;
     private Component settingsView;
-    private View settingsEditorView;
     private View processingView;
 
     private ArrayList<MouseObserver> mouseObservers;
+
+    private boolean isPaused = false;
 
     /**
      * This node will be rendered as soon as the currentFrame value of the root node from which this node originated
      * reaches this nodes' renderAtFrame value. If there is another node after this one with a lower renderAtFrame
      * value it will not be rendered before this node!
-     *
+     * <p>
      * This value will always be ignored if this is the root node.
      */
     private int renderAtFrame = 0;
@@ -62,14 +63,14 @@ public abstract class Node {
      * other nodes will be called. If this is the root node these steps will always be executed.
      */
     public void draw() {
-        if(root != null && renderAtFrame < root.getCurrentFrame()) {
+        if (root != null && renderAtFrame < root.getCurrentFrame()) {
             // do not render this node yet
             return;
         }
 
         render();
 
-        for(Node node : ptrNext) node.draw();
+        for (Node node : ptrNext) node.draw();
     }
 
     /**
@@ -79,6 +80,7 @@ public abstract class Node {
 
     /**
      * Adds a new node to the child nodes array
+     *
      * @param next the new child node to be added
      */
     public void addNextNode(Node next) {
@@ -87,6 +89,7 @@ public abstract class Node {
 
     /**
      * Updates the visibility of this node and of all child nodes
+     *
      * @param isVisible the new visibility state
      */
     public void setChildNodeVisibility(boolean isVisible) {
@@ -94,7 +97,7 @@ public abstract class Node {
         getProcessingView().setVisible(isVisible);
 
         // tell child nodes to update their visibility
-        for(Node n : ptrNext) {
+        for (Node n : ptrNext) {
             n.setChildNodeVisibility(isVisible);
         }
     }
@@ -103,17 +106,17 @@ public abstract class Node {
      * Draws the processing ui and tells all child nodes to draw their UI. This also pays respect to the visibility of
      * the UI components. For rendering, the view of each node's UI view will be called.
      */
-    public void drawUI () {
+    public void drawUI() {
         getProcessingView().draw();
 
-        for(Node n : ptrNext) {
+        for (Node n : ptrNext) {
             // todo draw connection arrows between these views here if they are visible
             n.drawUI();
         }
     }
 
     @Nullable
-    public Component getMenuView () {
+    public Component getMenuView() {
         return menuView;
     }
 
@@ -130,13 +133,12 @@ public abstract class Node {
         this.settingsView = settingsView;
     }
 
-    @Nullable
-    public View getSettingsEditorView() {
-        return settingsEditorView;
+    public boolean isPaused() {
+        return isPaused;
     }
 
-    protected void sSettingsEditorView(View settingsEditorView) {
-        this.settingsEditorView = settingsEditorView;
+    public void setPaused(boolean paused) {
+        isPaused = paused;
     }
 
     @Nullable

@@ -52,7 +52,7 @@ public class RootNode extends Node {
             }
         });
 
-        RootMenu menu = new RootMenu(context.getRootMenuFrame(), this);
+        RootMenu menu = new RootMenu(context, this);
         setMenuView(menu);
         context.addOnFocusChangedListener(menu);
 
@@ -61,6 +61,10 @@ public class RootNode extends Node {
 
     public int getCurrentFrame() {
         return currentFrame;
+    }
+
+    public void decCurrentFrame() {
+        if(currentFrame > 0) currentFrame--;
     }
 
     @Override
