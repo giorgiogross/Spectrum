@@ -15,6 +15,13 @@ public class PlusButton extends View {
 
     @Override
     public void render() {
-
+        context.stroke(0);
+        context.fill(0);
+        context.ellipse(getX() + getWidth() / 2, getY() + getHeight() / 2, getWidth(), getHeight());
+        context.stroke(255);
+        context.noFill();
+        context.ellipse(getX() + getWidth() / 2, getY() + getHeight() / 2, getWidth(), getHeight());
+        context.line(getX() + getWidth() / 2, getY(), getX() + getWidth() / 2, getY() + getHeight());
+        context.line(getX(), getY() + getHeight() / 2, getX() + getWidth(), getY() + getHeight() / 2);
     }
 }
