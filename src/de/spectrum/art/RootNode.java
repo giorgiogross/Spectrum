@@ -7,6 +7,7 @@ import de.spectrum.gui.java.RootMenu;
 import de.spectrum.gui.processing.OnClickListener;
 import de.spectrum.gui.processing.RootView;
 import de.spectrum.gui.processing.View;
+import de.spectrum.gui.processing.buttons.DeleteButton;
 import de.spectrum.gui.processing.buttons.PlusButton;
 
 /**
@@ -63,6 +64,16 @@ public class RootNode extends Node {
             }
         });
         rootView.addView(plusButton);
+
+        final DeleteButton deleteButton = new DeleteButton(2 * rootView.getWidth() / 3, 0,
+                rootView.getWidth() / 2, rootView.getHeight() / 2, context);
+        deleteButton.addOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RootNode.this.context.onDelete(RootNode.this);
+            }
+        });
+        rootView.addView(deleteButton);
 
         RootMenu menu = new RootMenu(context, this);
         setMenuView(menu);
