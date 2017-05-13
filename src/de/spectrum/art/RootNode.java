@@ -7,6 +7,7 @@ import de.spectrum.gui.java.RootMenu;
 import de.spectrum.gui.processing.OnClickListener;
 import de.spectrum.gui.processing.RootView;
 import de.spectrum.gui.processing.View;
+import de.spectrum.gui.processing.buttons.PlusButton;
 
 /**
  * Encapsulates all data structures and methods linked with a root node.
@@ -51,6 +52,17 @@ public class RootNode extends Node {
                 }
             }
         });
+
+        final PlusButton plusButton = new PlusButton(2 * rootView.getWidth() / 3, 2 * rootView.getHeight() / 3,
+                rootView.getWidth() / 2, rootView.getHeight() / 2, context);
+        plusButton.addOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addNextNode(new CommandNode(RootNode.this, context));
+                // todo add UI to command node
+            }
+        });
+        rootView.addView(plusButton);
 
         RootMenu menu = new RootMenu(context, this);
         setMenuView(menu);

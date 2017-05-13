@@ -1,5 +1,7 @@
 package de.spectrum.gui.java;
 
+import de.spectrum.App;
+
 import javax.swing.*;
 
 /**
@@ -8,12 +10,15 @@ import javax.swing.*;
  */
 public class Component {
     protected JFrame ui;
+    protected App context;
 
-    public Component() {
+    public Component(App context) {
+        this.context = context;
     }
 
-    public Component(JFrame ui) {
+    public Component(App context, JFrame ui) {
         this.ui = ui;
+        this.context = context;
     }
 
     public JFrame getView() {

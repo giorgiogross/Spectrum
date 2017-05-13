@@ -16,6 +16,10 @@ public interface OnMenuActionListener {
     void onPause();
     void onPause(RootNode rootNode);
 
+    void onDelete();
+    void onDelete(RootNode rootNode);
+    void onSetLayer(RootNode rootNode, int layer);
+
     void onSetFPS(int newFPS);
     void onSetFrameNumber(int num);
     void onExport();

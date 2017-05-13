@@ -34,6 +34,8 @@ public abstract class View extends Component implements MouseObserver {
     private ArrayList<OnClickListener> clickListeners;
 
     public View(int x, int y, int width, int height, App context) {
+        super(context);
+
         this.context = context;
         this.x = x;
         this.y = y;
@@ -67,11 +69,14 @@ public abstract class View extends Component implements MouseObserver {
 
     /**
      * Adds a new child view to this view. The last child view added will be rendered last (most on top) and will be
-     * notified about click events first.
+     * notified about click events first. The parent views' x and y coordinates will be added to the child views' x and
+     * y coordinates.
      *
      * @param view the new child view
      */
     public void addView(View view) {
+        view.setX(view.getX() + getX());
+        view.setY(view.getY() + getY());
         this.children.add(view);
     }
 

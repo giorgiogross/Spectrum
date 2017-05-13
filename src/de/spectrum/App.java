@@ -6,11 +6,14 @@ import de.spectrum.gui.OnFocusChangedListener;
 import de.spectrum.gui.OnMenuActionListener;
 import de.spectrum.gui.java.AppController;
 import de.spectrum.gui.java.Component;
+import de.spectrum.gui.java.RootMenu;
 import processing.core.PApplet;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * RootView class for the Spectrum App. Here happens initialization, kick off of rendering, management of UI's and
@@ -27,6 +30,8 @@ public class App extends PApplet implements OnMenuActionListener {
     private Component appController; // todo event handler for play pause rewind etc..
 
     private boolean showUI = false;
+
+    private int FPS = 30;
 
     /**
      * Starts up the app
@@ -49,7 +54,7 @@ public class App extends PApplet implements OnMenuActionListener {
         roots = new ArrayList<RootNode>();
         focusChangedListeners = new ArrayList<OnFocusChangedListener>();
 
-        appController = new AppController(getControlMenuFrame());
+        appController = new AppController(this, getControlMenuFrame());
     }
 
     @Override
@@ -139,7 +144,7 @@ public class App extends PApplet implements OnMenuActionListener {
         final JFrame frame = new JFrame("Root Node Menu");
         frame.setUndecorated(true);
         frame.setLocationRelativeTo(null);
-        frame.setSize(300, 30);
+        frame.setSize(300, 60);
         frame.setFocusable(false);
         frame.setFocusableWindowState(false);
         frame.setAlwaysOnTop(true);
@@ -165,6 +170,14 @@ public class App extends PApplet implements OnMenuActionListener {
         frame.setVisible(showUI);
 
         return frame;
+    }
+
+    public int getFPS() {
+        return FPS;
+    }
+
+    public void setFPS(int FPS) {
+        this.FPS = FPS;
     }
 
     @Override
@@ -199,7 +212,31 @@ public class App extends PApplet implements OnMenuActionListener {
     }
 
     @Override
+    public void onDelete() {
+
+    }
+
+    @Override
+    public void onDelete(RootNode rootNode) {
+
+    }
+
+    @Override
+    public void onSetLayer(RootNode rootNode, int layer) {
+        if(layer < 0) return;
+
+        rootNode.setLayer(layer);
+        sortRootsArray();
+
+        ((RootMenu)rootNode.getMenuView()).updateLayerNumber();
+    }
+
+    @Override
     public void onSetFPS(int newFPS) {
+        if(newFPS < 1) return;
+
+        setFPS(newFPS);
+        ((AppController) appController).updateFPSPNumber();
 
     }
 
@@ -226,5 +263,14 @@ public class App extends PApplet implements OnMenuActionListener {
     @Override
     public void onEditSettings(RootNode node) {
 
+    }
+
+    private void sortRootsArray() {
+        Collections.sort(roots, new Comparator<RootNode>() {
+            @Override
+            public int compare(RootNode o1, RootNode o2) {
+                return o1.getLayer() - o2.getLayer();
+            }
+        });
     }
 }
