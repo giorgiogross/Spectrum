@@ -29,6 +29,7 @@ public class RootNode extends Node {
         });
         registerMouseObserver(rootView);
         setProcessingView(rootView);
+
         context.addOnFocusChangedListener(new OnFocusChangedListener() {
             @Override
             public void onFocusChanged(Component c) {

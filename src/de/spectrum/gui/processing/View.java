@@ -47,7 +47,7 @@ public abstract class View extends Component implements MouseObserver {
     }
 
     public void draw() {
-        if(!isVisible) return;
+        if (!isVisible) return;
 
         render();
         for (View v : children) v.draw();
@@ -92,11 +92,16 @@ public abstract class View extends Component implements MouseObserver {
         return y;
     }
 
+    /**
+     * Set the views y coordinates and update the child views coordinates accordingly
+     *
+     * @param y the new y coordinate
+     */
     public void setY(int y) {
         int diff = y - this.y;
         this.y = y;
 
-        for(View v : children)
+        for (View v : children)
             v.setY(v.getY() + diff);
     }
 
@@ -104,11 +109,16 @@ public abstract class View extends Component implements MouseObserver {
         return x;
     }
 
+    /**
+     * Set the views x coordinates and update the child views coordinates accordingly
+     *
+     * @param x the new x coordinate
+     */
     public void setX(int x) {
         int diff = x - this.x;
         this.x = x;
 
-        for(View v : children)
+        for (View v : children)
             v.setX(v.getX() + diff);
     }
 

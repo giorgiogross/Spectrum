@@ -23,6 +23,7 @@ public class CommandNode extends Node {
                 getSettingsView().setFrameVisibility(true);
             }
         });
+        registerMouseObserver(commandView);
         setProcessingView(commandView);
 
         final PlusButton plusButton = new PlusButton(2 * commandView.getWidth() / 3, 2 * commandView.getHeight() / 3,
@@ -30,12 +31,7 @@ public class CommandNode extends Node {
         plusButton.addOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                // auto-focus this node
-                CommandNode.this.context.setFocusedComponent(commandView);
-
                 CommandNode cmdNode = new CommandNode(CommandNode.this.root, CommandNode.this.context);
-                // only show the child nodes when this node is focused
-                cmdNode.setChildNodeVisibility(commandView.isFocused());
                 addNextNode(cmdNode);
                 CommandNode.this.root.rearrangeChildNodes();
             }
@@ -47,10 +43,8 @@ public class CommandNode extends Node {
         deleteButton.addOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                // un-focus to hide the menu
-                CommandNode.this.context.setFocusedComponent(null);
-                // mark the node as delted. This will also mark all sub-nodes as deleted
-                CommandNode.this.context.onDelete(CommandNode.this.root);
+                // mark the node as deleted. This will also mark all sub-nodes as deleted
+                CommandNode.this.root.deleteCommandNode(CommandNode.this);
             }
         });
         commandView.addView(deleteButton);

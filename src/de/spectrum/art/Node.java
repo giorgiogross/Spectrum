@@ -109,7 +109,8 @@ public abstract class Node {
      * the UI components. For rendering, the view of each node's UI view will be called.
      */
     public void drawUI() {
-        getProcessingView().draw();
+        View procView = getProcessingView();
+        procView.draw();
 
         for (Iterator<Node> iter = ptrNext.iterator(); iter.hasNext(); ) {
             Node n = iter.next();
@@ -119,7 +120,15 @@ public abstract class Node {
                 return;
             }
 
-            // todo draw connection arrows between these views here if they are visible
+            if(n.getProcessingView().isVisible()) {
+                View foreignProcView = n.getProcessingView();
+                context.stroke(255);
+                context.noFill();
+                context.line(procView.getX() + procView.getWidth() / 2, procView.getY() + procView.getHeight(),
+                        foreignProcView.getX() + foreignProcView.getWidth() / 2, foreignProcView.getY());
+                context.fill(255);
+                context.rect(foreignProcView.getX() + foreignProcView.getWidth() / 2 - 2, foreignProcView.getY() - 2, 4, 4);
+            }
             n.drawUI();
         }
     }
@@ -180,7 +189,13 @@ public abstract class Node {
     }
 
     public ArrayList<MouseObserver> getMouseObservers() {
-        return mouseObservers;
+        ArrayList<MouseObserver> allObservers = new ArrayList<MouseObserver>();
+        allObservers.addAll(mouseObservers);
+        for (Node n : ptrNext) {
+            // concat all mouse observer arrays
+            allObservers.addAll(n.getMouseObservers());
+        }
+        return allObservers;
     }
 
     public boolean isMarkedAsDeleted() {
@@ -192,26 +207,30 @@ public abstract class Node {
      * processing view) and sets the calculated location to the child nodes. Then calls their rearrangeChildNodes()
      * method so that they can update the location of their child nodes accordingly.
      * <p>
-     *     Warning: Assumes that all child views have the same pixel width as this nodes' processing view!
+     * Warning: Assumes that all child views have the same pixel width as this nodes' processing view!
      * </p>
      */
     public void rearrangeChildNodes() {
-        int largestSubTreeWidth = getLargestSubTreeWidth(0);
-        if (largestSubTreeWidth <= 0) return;
+        if (ptrNext.size() == 0) return;
 
         int margin = processingView.getWidth() * 2;
-        int y = processingView.getY() + margin;
+        int[] subTreeWidth = new int[ptrNext.size()];
+        for (int i = 0; i < ptrNext.size(); i++) {
+            subTreeWidth[i] = ptrNext.get(i).getSubTreeWidth();
+        }
 
-        // calculate where to start drawing the child nodes
-        int totalWidthInPixel = largestSubTreeWidth * processingView.getWidth() + (largestSubTreeWidth - 1) * margin;
-        int x = processingView.getX() + processingView.getWidth() / 2 - totalWidthInPixel / 2;
+        int x = processingView.getX();
+        int y = processingView.getY() + processingView.getWidth() * 2;
 
         // draw the child nodes sequentially
-        for(Node n : ptrNext) {
+        for (int i = 0; i < ptrNext.size(); i++) {
+            Node n = ptrNext.get(i);
+
             n.getProcessingView().setX(x);
             n.getProcessingView().setY(y);
+            n.rearrangeChildNodes();
 
-            x += processingView.getWidth() + margin;
+            x += subTreeWidth[i] * margin;
         }
     }
 
@@ -219,16 +238,14 @@ public abstract class Node {
      * Searches through the rendering three to find the greates amount of child nodes a node has. Can be used to ensure
      * that sub trees don't overlap.
      *
-     * @param width currently largest number of child nodes
      * @return width or the new number of child nodes, if it's larger than width
      */
-    protected int getLargestSubTreeWidth(int width) {
-        int thisWidth = ptrNext.size();
-        if(width < thisWidth) width = thisWidth;
+    protected int getSubTreeWidth() {
+        int width = 0;
 
-        for(Node n : ptrNext) {
-            int nodeWidth = n.getLargestSubTreeWidth(width);
-            if(nodeWidth > width) width = nodeWidth;
+        if(ptrNext.size() == 0) width = 1;
+        else for (Node n : ptrNext) {
+            width += n.getSubTreeWidth();
         }
 
         return width;

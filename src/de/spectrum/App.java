@@ -93,7 +93,11 @@ public class App extends PApplet implements OnMenuActionListener {
 
     @Override
     public void keyTyped() {
-        if (key == 'm') showUI = !showUI;
+        if (key == 'm') {
+            showUI = !showUI;
+            if(showUI) onPause();
+            else onPlay();
+        }
 
         appController.setFrameVisibility(showUI);
 
@@ -121,7 +125,7 @@ public class App extends PApplet implements OnMenuActionListener {
             }
         }
 
-        if (clickedNum == 0) {
+        if (clickedNum == 0 && showUI) {
             // no view was clicked. Add a new root
             RootNode mRoot = new RootNode(mouseX, mouseY, this);
             mRoot.getProcessingView().setVisible(showUI);
@@ -152,7 +156,7 @@ public class App extends PApplet implements OnMenuActionListener {
         final JFrame frame = new JFrame("Root Node Menu");
         frame.setUndecorated(true);
         frame.setLocationRelativeTo(null);
-        frame.setSize(300, 60);
+        frame.setSize(200, 60);
         frame.setFocusable(false);
         frame.setFocusableWindowState(false);
         frame.setAlwaysOnTop(true);
