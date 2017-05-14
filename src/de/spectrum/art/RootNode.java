@@ -16,20 +16,15 @@ import de.spectrum.gui.processing.buttons.PlusButton;
 public class RootNode extends Node {
     private int currentFrame = 0;
 
-    public RootNode (int xCenter, int yCenter, final App context) {
+    public RootNode(int xCenter, int yCenter, App context) {
         super(null, context);
 
         final RootView rootView = new RootView(xCenter, yCenter, context);
         rootView.addOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(v.isFocused()) {
-                    v.setFocused(false);
-                    getMenuView().setFrameVisibility(false);
-                    return;
-                }
-
-                context.setFocusedComponent(v);
+                if (v.isFocused()) RootNode.this.context.setFocusedComponent(null);
+                else RootNode.this.context.setFocusedComponent(v);
             }
         });
         registerMouseObserver(rootView);
@@ -40,7 +35,7 @@ public class RootNode extends Node {
                 // delegate
                 rootView.onFocusChanged(c);
 
-                if(rootView.isFocused()) {
+                if (rootView.isFocused()) {
                     // show command node ui
                     setChildNodeVisibility(true);
                 } else {
@@ -57,7 +52,13 @@ public class RootNode extends Node {
         plusButton.addOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                addNextNode(new CommandNode(RootNode.this, context));
+                // auto-focus this node
+                RootNode.this.context.setFocusedComponent(rootView);
+
+                CommandNode cmdNode = new CommandNode(RootNode.this, RootNode.this.context);
+                // only show the child nodes when this node is focused
+                cmdNode.setChildNodeVisibility(rootView.isFocused());
+                addNextNode(cmdNode);
                 rearrangeChildNodes();
             }
         });
@@ -68,6 +69,9 @@ public class RootNode extends Node {
         deleteButton.addOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                // un-focus to hide the menu
+                if(rootView.isFocused()) RootNode.this.context.setFocusedComponent(null);
+                // mark the node as delted. This will also mark all sub-nodes as deleted
                 RootNode.this.context.onDelete(RootNode.this);
             }
         });
@@ -85,7 +89,7 @@ public class RootNode extends Node {
     }
 
     public void decCurrentFrame() {
-        if(currentFrame > 0) currentFrame--;
+        if (currentFrame > 0) currentFrame--;
     }
 
     public void deleteCommandNode(Node commandNode) {

@@ -93,7 +93,11 @@ public abstract class View extends Component implements MouseObserver {
     }
 
     public void setY(int y) {
+        int diff = y - this.y;
         this.y = y;
+
+        for(View v : children)
+            v.setY(v.getY() + diff);
     }
 
     public int getX() {
@@ -101,7 +105,11 @@ public abstract class View extends Component implements MouseObserver {
     }
 
     public void setX(int x) {
+        int diff = x - this.x;
         this.x = x;
+
+        for(View v : children)
+            v.setX(v.getX() + diff);
     }
 
     public boolean isFocused() {

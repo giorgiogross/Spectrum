@@ -77,7 +77,14 @@ public class App extends PApplet implements OnMenuActionListener {
 
         if (!showUI) return; // for performance reasons. App will still work without this line
         // handle processing UI's
-        for (RootNode root : roots) {
+        for (Iterator<RootNode> iter = roots.iterator(); iter.hasNext(); ) {
+            RootNode root = iter.next();
+            if(root.isMarkedAsDeleted()) {
+                // remove the obsolete node
+                roots.remove(root);
+                return;
+            }
+
             root.drawUI();
         }
 
@@ -108,13 +115,7 @@ public class App extends PApplet implements OnMenuActionListener {
     public void mouseClicked() {
         int clickedNum = 0;
 
-        for (Iterator<RootNode> iter = roots.iterator(); iter.hasNext(); ) {
-            RootNode root = iter.next();
-            if(root.isMarkedAsDeleted()) {
-                roots.remove(root);
-                return;
-            }
-
+        for (RootNode root : roots) {
             for (MouseObserver observer : root.getMouseObservers()) {
                 if (observer.mouseClicked(mouseX, mouseY)) clickedNum++;
             }

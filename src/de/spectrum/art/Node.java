@@ -195,7 +195,7 @@ public abstract class Node {
      *     Warning: Assumes that all child views have the same pixel width as this nodes' processing view!
      * </p>
      */
-    protected void rearrangeChildNodes() {
+    public void rearrangeChildNodes() {
         int largestSubTreeWidth = getLargestSubTreeWidth(0);
         if (largestSubTreeWidth <= 0) return;
 
