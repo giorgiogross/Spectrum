@@ -45,15 +45,6 @@ public class RootMenu extends Component implements OnFocusChangedListener {
         });
         getView().add(bPlay);
 
-        bDelete = new JButton("X");
-        bDelete.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                RootMenu.this.context.onDelete(attachedNode);
-            }
-        });
-        getView().add(bDelete);
-
         bRevert = new JButton("«");
         bRevert.addActionListener(new ActionListener() {
             @Override
