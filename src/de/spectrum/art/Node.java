@@ -7,6 +7,7 @@ import de.spectrum.gui.java.Component;
 import de.spectrum.gui.processing.View;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Node of the art rendering graph. The render graph is the linked list which determines when a certain rule will be
@@ -31,6 +32,7 @@ public abstract class Node {
     private ArrayList<MouseObserver> mouseObservers;
 
     private boolean isPaused = false;
+    private boolean isMarkedAsDeleted = false;
 
     /**
      * This node will be rendered as soon as the currentFrame value of the root node from which this node originated
@@ -109,7 +111,14 @@ public abstract class Node {
     public void drawUI() {
         getProcessingView().draw();
 
-        for (Node n : ptrNext) {
+        for (Iterator<Node> iter = ptrNext.iterator(); iter.hasNext(); ) {
+            Node n = iter.next();
+
+            if (n.isMarkedAsDeleted()) {
+                ptrNext.remove(n);
+                return;
+            }
+
             // todo draw connection arrows between these views here if they are visible
             n.drawUI();
         }
@@ -172,5 +181,63 @@ public abstract class Node {
 
     public ArrayList<MouseObserver> getMouseObservers() {
         return mouseObservers;
+    }
+
+    public boolean isMarkedAsDeleted() {
+        return isMarkedAsDeleted;
+    }
+
+    /**
+     * Re-calculate the location of the child nodes of this view (based on the processing coordinates of the nodes'
+     * processing view) and sets the calculated location to the child nodes. Then calls their rearrangeChildNodes()
+     * method so that they can update the location of their child nodes accordingly.
+     * <p>
+     *     Warning: Assumes that all child views have the same pixel width as this nodes' processing view!
+     * </p>
+     */
+    protected void rearrangeChildNodes() {
+        int largestSubTreeWidth = getLargestSubTreeWidth(0);
+        if (largestSubTreeWidth <= 0) return;
+
+        int margin = processingView.getWidth() * 2;
+        int y = processingView.getY() + margin;
+
+        // calculate where to start drawing the child nodes
+        int totalWidthInPixel = largestSubTreeWidth * processingView.getWidth() + (largestSubTreeWidth - 1) * margin;
+        int x = processingView.getX() + processingView.getWidth() / 2 - totalWidthInPixel / 2;
+
+        // draw the child nodes sequentially
+        for(Node n : ptrNext) {
+            n.getProcessingView().setX(x);
+            n.getProcessingView().setY(y);
+
+            x += processingView.getWidth() + margin;
+        }
+    }
+
+    /**
+     * Searches through the rendering three to find the greates amount of child nodes a node has. Can be used to ensure
+     * that sub trees don't overlap.
+     *
+     * @param width currently largest number of child nodes
+     * @return width or the new number of child nodes, if it's larger than width
+     */
+    protected int getLargestSubTreeWidth(int width) {
+        int thisWidth = ptrNext.size();
+        if(width < thisWidth) width = thisWidth;
+
+        for(Node n : ptrNext) {
+            int nodeWidth = n.getLargestSubTreeWidth(width);
+            if(nodeWidth > width) width = nodeWidth;
+        }
+
+        return width;
+    }
+
+    public void delete() {
+        // delete all child nodes
+        for (Node n : ptrNext) n.delete();
+        // delete this node
+        isMarkedAsDeleted = true;
     }
 }

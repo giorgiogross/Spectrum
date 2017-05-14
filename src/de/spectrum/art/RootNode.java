@@ -20,8 +20,6 @@ public class RootNode extends Node {
         super(null, context);
 
         final RootView rootView = new RootView(xCenter, yCenter, context);
-        // todo add delete and addition button, instantiate or delete command nodes and add proper listeners. also do
-        // todo this in the command node class
         rootView.addOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -48,7 +46,7 @@ public class RootNode extends Node {
                 } else {
                     // hide command node ui
                     setChildNodeVisibility(false);
-                    // re-show this node
+                    // re-show this node as setting al nodes invisible also affected this node
                     getProcessingView().setVisible(true);
                 }
             }
@@ -60,7 +58,7 @@ public class RootNode extends Node {
             @Override
             public void onClick(View v) {
                 addNextNode(new CommandNode(RootNode.this, context));
-                // todo add UI to command node
+                rearrangeChildNodes();
             }
         });
         rootView.addView(plusButton);
@@ -88,6 +86,10 @@ public class RootNode extends Node {
 
     public void decCurrentFrame() {
         if(currentFrame > 0) currentFrame--;
+    }
+
+    public void deleteCommandNode(Node commandNode) {
+        commandNode.delete();
     }
 
     @Override

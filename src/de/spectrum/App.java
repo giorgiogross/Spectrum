@@ -14,6 +14,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 
 /**
  * RootView class for the Spectrum App. Here happens initialization, kick off of rendering, management of UI's and
@@ -107,7 +108,13 @@ public class App extends PApplet implements OnMenuActionListener {
     public void mouseClicked() {
         int clickedNum = 0;
 
-        for (RootNode root : roots) {
+        for (Iterator<RootNode> iter = roots.iterator(); iter.hasNext(); ) {
+            RootNode root = iter.next();
+            if(root.isMarkedAsDeleted()) {
+                roots.remove(root);
+                return;
+            }
+
             for (MouseObserver observer : root.getMouseObservers()) {
                 if (observer.mouseClicked(mouseX, mouseY)) clickedNum++;
             }
@@ -218,7 +225,7 @@ public class App extends PApplet implements OnMenuActionListener {
 
     @Override
     public void onDelete(RootNode rootNode) {
-
+        rootNode.delete();
     }
 
     @Override
