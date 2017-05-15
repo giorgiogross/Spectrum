@@ -1,6 +1,7 @@
 package de.spectrum.art;
 
 import de.spectrum.App;
+import de.spectrum.gui.java.NodeAdder;
 import de.spectrum.gui.processing.CommandView;
 import de.spectrum.gui.processing.OnClickListener;
 import de.spectrum.gui.processing.View;
@@ -32,9 +33,9 @@ public class CommandNode extends Node {
         plusButton.addOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommandNode cmdNode = new CommandNode(CommandNode.this.root, CommandNode.this.context);
-                addNextNode(cmdNode);
-                CommandNode.this.root.rearrangeChildNodes();
+                NodeAdder adderView = new NodeAdder(CommandNode.this, CommandNode.this.context, CommandNode.this.context.getNodeAdderFrame());
+                adderView.setFrameVisibility(true);
+                // maybe make trhis private, override dlete() and hide this view along with all other views when deleted (or when focus changes)
             }
         });
         commandView.addView(plusButton);

@@ -1,5 +1,6 @@
 package de.spectrum;
 
+import de.spectrum.art.Node;
 import de.spectrum.art.RootNode;
 import de.spectrum.gui.MouseObserver;
 import de.spectrum.gui.OnFocusChangedListener;
@@ -27,10 +28,12 @@ public class App extends PApplet implements OnMenuActionListener {
      * Retain a reference to all data structures
      */
     private ArrayList<RootNode> roots;
+    protected ArrayList<RootNode> generatedRoots;
     private ArrayList<OnFocusChangedListener> focusChangedListeners;
     private Component appController; // todo event handler for play pause rewind etc..
 
     private boolean showUI = false;
+    private int rootNodeIdCounter = 0;
 
     private int FPS = 30;
 
@@ -53,6 +56,7 @@ public class App extends PApplet implements OnMenuActionListener {
 
     private void initDataStructures() {
         roots = new ArrayList<RootNode>();
+        generatedRoots = new ArrayList<RootNode>();
         focusChangedListeners = new ArrayList<OnFocusChangedListener>();
 
         appController = new AppController(this, getControlMenuFrame());
@@ -72,7 +76,10 @@ public class App extends PApplet implements OnMenuActionListener {
 
         // draw all artworks
         for (RootNode root : roots) {
-            root.draw();
+            root.draw(new ArrayList<Node>());
+        }
+        for (RootNode root : generatedRoots) {
+            root.draw(new ArrayList<Node>());
         }
 
         if (!showUI) return; // for performance reasons. App will still work without this line
@@ -85,10 +92,8 @@ public class App extends PApplet implements OnMenuActionListener {
                 return;
             }
 
-            root.drawUI();
+            root.drawUI(new ArrayList<Node>());
         }
-
-        // handle render graph preview if necessary
     }
 
     @Override
@@ -103,7 +108,7 @@ public class App extends PApplet implements OnMenuActionListener {
 
         for (RootNode root : roots) {
             if (!showUI) {
-                root.setChildNodeVisibility(false);
+                root.setChildNodeVisibility(false, new ArrayList<Node>());
                 root.getMenuView().setFrameVisibility(false);
             } else {
                 root.getProcessingView().setVisible(true);
@@ -120,7 +125,7 @@ public class App extends PApplet implements OnMenuActionListener {
         int clickedNum = 0;
 
         for (RootNode root : roots) {
-            for (MouseObserver observer : root.getMouseObservers()) {
+            for (MouseObserver observer : root.getMouseObservers(new ArrayList<Node>())) {
                 if (observer.mouseClicked(mouseX, mouseY)) clickedNum++;
             }
         }
@@ -166,6 +171,19 @@ public class App extends PApplet implements OnMenuActionListener {
         return frame;
     }
 
+    public JFrame getNodeAdderFrame() {
+        final JFrame frame = new JFrame("Add Node");
+        frame.setUndecorated(true);
+        frame.setLocationRelativeTo(null);
+        frame.setSize(300, 30);
+        frame.setFocusable(false);
+        frame.setAlwaysOnTop(true);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setVisible(false);
+
+        return frame;
+    }
+
     public JFrame getControlMenuFrame() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         double width = screenSize.getWidth();
@@ -184,12 +202,24 @@ public class App extends PApplet implements OnMenuActionListener {
         return frame;
     }
 
+    public void addGeneratedRootNode (RootNode generatedRoot) {
+        this.generatedRoots.add(generatedRoot);
+    }
+
+    public ArrayList<RootNode> getRootNodes() {
+        return roots;
+    }
+
     public int getFPS() {
         return FPS;
     }
 
     public void setFPS(int FPS) {
         this.FPS = FPS;
+    }
+
+    public int getNewRootNodeId() {
+        return rootNodeIdCounter++;
     }
 
     @Override

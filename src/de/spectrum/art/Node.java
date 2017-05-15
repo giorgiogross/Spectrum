@@ -71,7 +71,7 @@ public abstract class Node {
      * Called by the render graph. If this node should be rendered render() is called. Afterwards the draw method of all
      * other nodes will be called. If this is the root node these steps will always be executed.
      */
-    public void draw() {
+    public void draw(ArrayList<Node> scannedNodes) {
         if (root != null && renderAtFrame < root.getCurrentFrame()) {
             // do not render this node yet
             return;
@@ -79,7 +79,12 @@ public abstract class Node {
 
         render();
 
-        for (Node node : ptrNext) node.draw();
+        for (Node node : ptrNext) {
+            if(scannedNodes.contains(node)) continue;
+            scannedNodes.add(node);
+
+            node.draw(scannedNodes);
+        }
     }
 
     /**
@@ -101,13 +106,16 @@ public abstract class Node {
      *
      * @param isVisible the new visibility state
      */
-    public void setChildNodeVisibility(boolean isVisible) {
+    public void setChildNodeVisibility(boolean isVisible, ArrayList<Node> scannedNodes) {
         // update own visibility
         getProcessingView().setVisible(isVisible);
 
         // tell child nodes to update their visibility
         for (Node n : ptrNext) {
-            n.setChildNodeVisibility(isVisible);
+            if(scannedNodes.contains(n)) continue;
+            scannedNodes.add(n);
+
+            n.setChildNodeVisibility(isVisible, scannedNodes);
         }
     }
 
@@ -115,7 +123,7 @@ public abstract class Node {
      * Draws the processing ui and tells all child nodes to draw their UI. This also pays respect to the visibility of
      * the UI components. For rendering, the view of each node's UI view will be called.
      */
-    public void drawUI() {
+    public void drawUI(ArrayList<Node> scannedNodes) {
         View procView = getProcessingView();
         procView.draw();
 
@@ -127,7 +135,10 @@ public abstract class Node {
                 return;
             }
 
-            if(n.getProcessingView().isVisible()) {
+            if(scannedNodes.contains(n)) continue;
+            scannedNodes.add(n);
+
+            if (n.getProcessingView().isVisible()) {
                 View foreignProcView = n.getProcessingView();
                 context.stroke(255);
                 context.noFill();
@@ -136,7 +147,7 @@ public abstract class Node {
                 context.fill(255);
                 context.rect(foreignProcView.getX() + foreignProcView.getWidth() / 2 - 2, foreignProcView.getY() - 2, 4, 4);
             }
-            n.drawUI();
+            n.drawUI(scannedNodes);
         }
     }
 
@@ -211,12 +222,16 @@ public abstract class Node {
         this.mouseObservers.add(observer);
     }
 
-    public ArrayList<MouseObserver> getMouseObservers() {
+    public ArrayList<MouseObserver> getMouseObservers(ArrayList<Node> scannedNodes) {
         ArrayList<MouseObserver> allObservers = new ArrayList<MouseObserver>();
+
         allObservers.addAll(mouseObservers);
         for (Node n : ptrNext) {
+            if (scannedNodes.contains(n)) continue;
+            scannedNodes.add(n);
+
             // concat all mouse observer arrays
-            allObservers.addAll(n.getMouseObservers());
+            allObservers.addAll(n.getMouseObservers(scannedNodes));
         }
         return allObservers;
     }
@@ -233,13 +248,13 @@ public abstract class Node {
      * Warning: Assumes that all child views have the same pixel width as this nodes' processing view!
      * </p>
      */
-    public void rearrangeChildNodes() {
+    public void rearrangeChildNodes(ArrayList<Node> scannedNodes) {
         if (ptrNext.size() == 0) return;
 
         int margin = processingView.getWidth() * 2;
         int[] subTreeWidth = new int[ptrNext.size()];
         for (int i = 0; i < ptrNext.size(); i++) {
-            subTreeWidth[i] = ptrNext.get(i).getSubTreeWidth();
+            subTreeWidth[i] = ptrNext.get(i).getSubTreeWidth(new ArrayList<Node>());
         }
 
         int x = processingView.getX();
@@ -248,10 +263,12 @@ public abstract class Node {
         // draw the child nodes sequentially
         for (int i = 0; i < ptrNext.size(); i++) {
             Node n = ptrNext.get(i);
+            if (scannedNodes.contains(n)) continue;
+            scannedNodes.add(n);
 
             n.getProcessingView().setX(x);
             n.getProcessingView().setY(y);
-            n.rearrangeChildNodes();
+            n.rearrangeChildNodes(scannedNodes);
 
             x += subTreeWidth[i] * margin;
         }
@@ -261,23 +278,44 @@ public abstract class Node {
      * Searches through the rendering three to find the greates amount of child nodes a node has. Can be used to ensure
      * that sub trees don't overlap.
      *
+     * @param scannedNodes all nodes which were already scanned
      * @return width or the new number of child nodes, if it's larger than width
      */
-    protected int getSubTreeWidth() {
+    protected int getSubTreeWidth(ArrayList<Node> scannedNodes) {
         int width = 0;
 
-        if(ptrNext.size() == 0) width = 1;
+        if (ptrNext.size() == 0) width = 1;
         else for (Node n : ptrNext) {
-            width += n.getSubTreeWidth();
+            if (scannedNodes.contains(n)) continue;
+            scannedNodes.add(n);
+
+            width += n.getSubTreeWidth(scannedNodes);
         }
 
         return width;
     }
 
     public void delete() {
-        // delete all child nodes
-        for (Node n : ptrNext) n.delete();
         // delete this node
         isMarkedAsDeleted = true;
+
+        // delete all child nodes
+        for (Node n : ptrNext) {
+            if (!n.isMarkedAsDeleted()) n.delete();
+        }
+    }
+
+    public RootNode getRootNode() {
+        return root;
+    }
+
+    public ArrayList<Node> getAllNodes(ArrayList<Node> scannedNodes) {
+        if (scannedNodes.contains(this)) return scannedNodes;
+        scannedNodes.add(this);
+
+        for (Node n : ptrNext) {
+            scannedNodes = n.getAllNodes(scannedNodes);
+        }
+        return scannedNodes;
     }
 }

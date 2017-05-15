@@ -10,18 +10,20 @@ import de.spectrum.gui.processing.View;
 import de.spectrum.gui.processing.buttons.DeleteButton;
 import de.spectrum.gui.processing.buttons.PlusButton;
 
+import java.util.ArrayList;
+
 /**
  * Encapsulates all data structures and methods linked with a root node.
  */
 public class RootNode extends Node {
     private int currentFrame = 0;
-    private int childNodeIdCounter = 0;
+    private int childNodeIdCounter = 1;
 
     public RootNode(int xCenter, int yCenter, App context) {
         super(null, context);
-        setId(getNewChildNodeId());
+        setId(context.getNewRootNodeId());
 
-        final RootView rootView = new RootView(xCenter, yCenter, context);
+        final RootView rootView = new RootView(xCenter, yCenter, getId(), context);
         rootView.addOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -40,10 +42,10 @@ public class RootNode extends Node {
 
                 if (rootView.isFocused()) {
                     // show command node ui
-                    setChildNodeVisibility(true);
+                    setChildNodeVisibility(true, new ArrayList<Node>());
                 } else {
                     // hide command node ui
-                    setChildNodeVisibility(false);
+                    setChildNodeVisibility(false, new ArrayList<Node>());
                     // re-show this node as setting al nodes invisible also affected this node
                     getProcessingView().setVisible(true);
                 }
@@ -60,9 +62,9 @@ public class RootNode extends Node {
 
                 CommandNode cmdNode = new CommandNode(RootNode.this, RootNode.this.context);
                 // only show the child nodes when this node is focused
-                cmdNode.setChildNodeVisibility(rootView.isFocused());
+                cmdNode.setChildNodeVisibility(rootView.isFocused(), new ArrayList<Node>());
                 addNextNode(cmdNode);
-                rearrangeChildNodes();
+                rearrangeChildNodes(new ArrayList<Node>());
             }
         });
         rootView.addView(plusButton);
