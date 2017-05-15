@@ -49,6 +49,13 @@ public abstract class Node {
     private int layer = 0;
 
     /**
+     * Number will be shown in the processing ui to identify the node
+     */
+    private int id = -1;
+
+    private String label = "Node";
+
+    /**
      * All next nodes after this node in the render graph
      */
     protected ArrayList<Node> ptrNext;
@@ -182,6 +189,22 @@ public abstract class Node {
 
     public void setLayer(int layer) {
         this.layer = layer;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
     }
 
     protected void registerMouseObserver(MouseObserver observer) {

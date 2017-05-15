@@ -15,9 +15,11 @@ import de.spectrum.gui.processing.buttons.PlusButton;
  */
 public class RootNode extends Node {
     private int currentFrame = 0;
+    private int childNodeIdCounter = 0;
 
     public RootNode(int xCenter, int yCenter, App context) {
         super(null, context);
+        setId(getNewChildNodeId());
 
         final RootView rootView = new RootView(xCenter, yCenter, context);
         rootView.addOnClickListener(new OnClickListener() {
@@ -83,6 +85,10 @@ public class RootNode extends Node {
         context.addOnFocusChangedListener(menu);
 
         // setSettingsView(settingsView);
+    }
+
+    public int getNewChildNodeId() {
+        return childNodeIdCounter++;
     }
 
     public int getCurrentFrame() {

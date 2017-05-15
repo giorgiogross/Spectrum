@@ -14,8 +14,9 @@ public class CommandNode extends Node {
 
     public CommandNode(RootNode root, App context) {
         super(root, context);
+        setId(root.getNewChildNodeId());
 
-        final CommandView commandView = new CommandView(0, 0, context); // coordinates will be overridden by parent node
+        final CommandView commandView = new CommandView(0, 0, getId(), context); // coordinates will be overridden by parent node
         commandView.addOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
