@@ -48,7 +48,7 @@ public class RootNode extends Node {
             }
         });
 
-        final PlusButton plusButton = new PlusButton(2 * rootView.getWidth() / 3, 2 * rootView.getHeight() / 3,
+        final PlusButton plusButton = new PlusButton(rootView.getWidth() / 2, rootView.getHeight() / 2,
                 rootView.getWidth() / 2, rootView.getHeight() / 2, context);
         plusButton.addOnClickListener(new OnClickListener() {
             @Override
@@ -65,7 +65,7 @@ public class RootNode extends Node {
         });
         rootView.addView(plusButton);
 
-        final DeleteButton deleteButton = new DeleteButton(2 * rootView.getWidth() / 3, 0,
+        final DeleteButton deleteButton = new DeleteButton(rootView.getWidth() / 2, 0,
                 rootView.getWidth() / 2, rootView.getHeight() / 2, context);
         deleteButton.addOnClickListener(new OnClickListener() {
             @Override

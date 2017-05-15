@@ -26,7 +26,7 @@ public class CommandNode extends Node {
         registerMouseObserver(commandView);
         setProcessingView(commandView);
 
-        final PlusButton plusButton = new PlusButton(2 * commandView.getWidth() / 3, 2 * commandView.getHeight() / 3,
+        final PlusButton plusButton = new PlusButton(commandView.getWidth() / 2, commandView.getHeight() / 2,
                 commandView.getWidth() / 2, commandView.getHeight() / 2, context);
         plusButton.addOnClickListener(new OnClickListener() {
             @Override
@@ -38,7 +38,7 @@ public class CommandNode extends Node {
         });
         commandView.addView(plusButton);
 
-        final DeleteButton deleteButton = new DeleteButton(2 * commandView.getWidth() / 3, 0,
+        final DeleteButton deleteButton = new DeleteButton(commandView.getWidth() / 2, 0,
                 commandView.getWidth() / 2, commandView.getHeight() / 2, context);
         deleteButton.addOnClickListener(new OnClickListener() {
             @Override
