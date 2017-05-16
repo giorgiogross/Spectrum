@@ -255,7 +255,8 @@ public class App extends PApplet implements OnMenuActionListener {
 
     @Override
     public void onDelete() {
-
+        setFocusedComponent(null);
+        initDataStructures();
     }
 
     @Override
