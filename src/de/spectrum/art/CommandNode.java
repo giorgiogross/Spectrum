@@ -17,7 +17,9 @@ public class CommandNode extends Node {
         super(root, context);
         setId(root.getNewChildNodeId());
 
-        final CommandView commandView = new CommandView(0, 0, getId(), context); // coordinates will be overridden by parent node
+        // CommandView coordinates will be overridden by parent node...
+        final CommandView commandView = new CommandView(0, 0, getId(), context);
+
         commandView.addOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -33,9 +35,11 @@ public class CommandNode extends Node {
         plusButton.addOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                NodeAdder adderView = new NodeAdder(CommandNode.this, CommandNode.this.context, CommandNode.this.context.getNodeAdderFrame());
+                NodeAdder adderView = new NodeAdder(CommandNode.this, CommandNode.this.context,
+                        CommandNode.this.context.getNodeAdderFrame());
                 adderView.setFrameVisibility(true);
-                // maybe make trhis private, override dlete() and hide this view along with all other views when deleted (or when focus changes)
+                // maybe make this private, override dleete() and hide this view along with all other views when deleted
+                // (or when focus changes)
             }
         });
         commandView.addView(plusButton);

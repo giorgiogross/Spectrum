@@ -115,6 +115,9 @@ public abstract class Node {
             if(scannedNodes.contains(n)) continue;
             scannedNodes.add(n);
 
+            // exclude root nodes. Visibility of root nodes should only be changed with a mouse click
+            if(n.getRootNode() == null) continue;
+
             n.setChildNodeVisibility(isVisible, scannedNodes);
         }
     }
@@ -135,10 +138,7 @@ public abstract class Node {
                 return;
             }
 
-            if(scannedNodes.contains(n)) continue;
-            scannedNodes.add(n);
-
-            if (n.getProcessingView().isVisible()) {
+            if (n.getProcessingView().isVisible() && this.getProcessingView().isVisible()) {
                 View foreignProcView = n.getProcessingView();
                 context.stroke(255);
                 context.noFill();
@@ -147,6 +147,10 @@ public abstract class Node {
                 context.fill(255);
                 context.rect(foreignProcView.getX() + foreignProcView.getWidth() / 2 - 2, foreignProcView.getY() - 2, 4, 4);
             }
+
+            if(scannedNodes.contains(n)) continue;
+            scannedNodes.add(n);
+
             n.drawUI(scannedNodes);
         }
     }
@@ -230,6 +234,8 @@ public abstract class Node {
             if (scannedNodes.contains(n)) continue;
             scannedNodes.add(n);
 
+            if(n.getRootNode() == null) continue;
+
             // concat all mouse observer arrays
             allObservers.addAll(n.getMouseObservers(scannedNodes));
         }
@@ -251,6 +257,9 @@ public abstract class Node {
     public void rearrangeChildNodes(ArrayList<Node> scannedNodes) {
         if (ptrNext.size() == 0) return;
 
+        // if this is the root node we will still have to add it:
+        if(!scannedNodes.contains(this)) scannedNodes.add(this);
+
         int margin = processingView.getWidth() * 2;
         int[] subTreeWidth = new int[ptrNext.size()];
         for (int i = 0; i < ptrNext.size(); i++) {
@@ -260,17 +269,26 @@ public abstract class Node {
         int x = processingView.getX();
         int y = processingView.getY() + processingView.getWidth() * 2;
 
+        // store all nodes which are marked scanned in the following for loop but still neet to rearrange their child nodes
+        ArrayList<Node> unscannedNodes = new ArrayList<Node>();
         // draw the child nodes sequentially
         for (int i = 0; i < ptrNext.size(); i++) {
             Node n = ptrNext.get(i);
             if (scannedNodes.contains(n)) continue;
             scannedNodes.add(n);
 
+            // never rearrange root nodes. Their location can only be changed by dragging & dropping with the mouse
+            if(n.getRootNode() == null) continue;
+
             n.getProcessingView().setX(x);
             n.getProcessingView().setY(y);
-            n.rearrangeChildNodes(scannedNodes);
 
             x += subTreeWidth[i] * margin;
+            unscannedNodes.add(n);
+        }
+
+        for(Node n : unscannedNodes) {
+            n.rearrangeChildNodes(scannedNodes);
         }
     }
 

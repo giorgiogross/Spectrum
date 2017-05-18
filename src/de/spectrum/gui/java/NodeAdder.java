@@ -68,6 +68,7 @@ public class NodeAdder extends Component {
             }
         });
         getView().add(bApply);
+        // add nodes by tapping enter
         getView().getRootPane().setDefaultButton(bApply);
     }
 }

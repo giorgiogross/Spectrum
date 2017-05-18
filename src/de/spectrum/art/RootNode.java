@@ -48,6 +48,9 @@ public class RootNode extends Node {
                     setChildNodeVisibility(false, new ArrayList<Node>());
                     // re-show this node as setting al nodes invisible also affected this node
                     getProcessingView().setVisible(true);
+
+                    getMenuView().setFrameVisibility(false);
+                    // todo hide settings view
                 }
             }
         });
