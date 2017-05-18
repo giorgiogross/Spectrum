@@ -256,7 +256,10 @@ public class App extends PApplet implements OnMenuActionListener {
     @Override
     public void onDelete() {
         setFocusedComponent(null);
-        initDataStructures();
+        focusChangedListeners = new ArrayList<OnFocusChangedListener>();
+
+        for (Node n : roots) n.delete();
+        for (Node n : generatedRoots) n.delete();
     }
 
     @Override
