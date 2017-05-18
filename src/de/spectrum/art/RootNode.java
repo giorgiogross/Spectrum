@@ -18,6 +18,7 @@ import java.util.ArrayList;
 public class RootNode extends Node {
     private int currentFrame = 0;
     private int childNodeIdCounter = 1;
+    private PaintContext paintContext;
 
     public RootNode(int xCenter, int yCenter, App context) {
         super(null, context);
@@ -100,6 +101,10 @@ public class RootNode extends Node {
 
     public void deleteCommandNode(Node commandNode) {
         commandNode.delete();
+    }
+
+    public PaintContext getPaintContext() {
+        return paintContext;
     }
 
     @Override

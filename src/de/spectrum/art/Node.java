@@ -308,6 +308,9 @@ public abstract class Node {
             if (scannedNodes.contains(n)) continue;
             scannedNodes.add(n);
 
+            // exclude root node
+            if(n.getRootNode() == null) continue;
+
             width += n.getSubTreeWidth(scannedNodes);
         }
 
@@ -320,7 +323,8 @@ public abstract class Node {
 
         // delete all child nodes
         for (Node n : ptrNext) {
-            if (!n.isMarkedAsDeleted()) n.delete();
+            // exclude root node..
+            if (!n.isMarkedAsDeleted() && n.getRootNode() != null) n.delete();
         }
     }
 
