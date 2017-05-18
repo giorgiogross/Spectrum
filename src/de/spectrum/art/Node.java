@@ -234,6 +234,7 @@ public abstract class Node {
             if (scannedNodes.contains(n)) continue;
             scannedNodes.add(n);
 
+            // exclude root node
             if(n.getRootNode() == null) continue;
 
             // concat all mouse observer arrays
@@ -336,4 +337,20 @@ public abstract class Node {
         }
         return scannedNodes;
     }
+
+    public void hideUI(ArrayList<Node> scannedNodes) {
+        hideCustomUI();
+
+        for(Node n : ptrNext) {
+            if(scannedNodes.contains(n)) continue;
+            scannedNodes.add(n);
+
+            // exclude root node
+            if(n.getRootNode() == null) continue;
+
+            n.hideUI(scannedNodes);
+        }
+    }
+
+    protected abstract void hideCustomUI();
 }

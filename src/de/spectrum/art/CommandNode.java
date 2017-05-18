@@ -12,6 +12,7 @@ import de.spectrum.gui.processing.buttons.PlusButton;
  * Created by Giorgio on 03.05.17.
  */
 public class CommandNode extends Node {
+    private NodeAdder adderView;
 
     public CommandNode(RootNode root, App context) {
         super(root, context);
@@ -35,7 +36,7 @@ public class CommandNode extends Node {
         plusButton.addOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                NodeAdder adderView = new NodeAdder(CommandNode.this, CommandNode.this.context,
+                adderView = new NodeAdder(CommandNode.this, CommandNode.this.context,
                         CommandNode.this.context.getNodeAdderFrame());
                 adderView.setFrameVisibility(true);
                 // maybe make this private, override dleete() and hide this view along with all other views when deleted
@@ -59,5 +60,12 @@ public class CommandNode extends Node {
     @Override
     protected void render() {
 
+    }
+
+    @Override
+    protected void hideCustomUI() {
+        // todo hide settings view
+        // getSettingsView().setFrameVisibility(false);
+        if(adderView != null) adderView.setFrameVisibility(false);
     }
 }

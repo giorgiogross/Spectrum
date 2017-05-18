@@ -44,13 +44,7 @@ public class RootNode extends Node {
                     // show command node ui
                     setChildNodeVisibility(true, new ArrayList<Node>());
                 } else {
-                    // hide command node ui
-                    setChildNodeVisibility(false, new ArrayList<Node>());
-                    // re-show this node as setting al nodes invisible also affected this node
-                    getProcessingView().setVisible(true);
-
-                    getMenuView().setFrameVisibility(false);
-                    // todo hide settings view
+                    hideUI(new ArrayList<Node>());
                 }
             }
         });
@@ -111,5 +105,17 @@ public class RootNode extends Node {
     @Override
     protected void render() {
         // do nothing
+    }
+
+    @Override
+    protected void hideCustomUI() {
+        // hide command node ui
+        setChildNodeVisibility(false, new ArrayList<Node>());
+        // re-show this node as setting al nodes invisible also affected this node
+        getProcessingView().setVisible(true);
+
+        // todo hide settings view
+        // getSettingsView().setFrameVisibility(false);
+        getMenuView().setFrameVisibility(false);
     }
 }
