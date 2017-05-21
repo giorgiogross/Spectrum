@@ -85,6 +85,8 @@ public class RootNode extends Node {
         context.addOnFocusChangedListener(menu);
 
         // setSettingsView(settingsView);
+
+        paintContext = new PaintContext(xCenter, yCenter);
     }
 
     public int getNewChildNodeId() {

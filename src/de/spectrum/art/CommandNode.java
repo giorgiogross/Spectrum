@@ -1,6 +1,9 @@
 package de.spectrum.art;
 
 import de.spectrum.App;
+import de.spectrum.art.commands.Command;
+import de.spectrum.art.commands.SelectionCommand;
+import de.spectrum.gui.java.Component;
 import de.spectrum.gui.java.NodeAdder;
 import de.spectrum.gui.processing.CommandView;
 import de.spectrum.gui.processing.OnClickListener;
@@ -8,11 +11,14 @@ import de.spectrum.gui.processing.View;
 import de.spectrum.gui.processing.buttons.DeleteButton;
 import de.spectrum.gui.processing.buttons.PlusButton;
 
+import javax.swing.*;
+
 /**
  * Created by Giorgio on 03.05.17.
  */
 public class CommandNode extends Node {
     private NodeAdder adderView;
+    private Command command; // exchange this with a "Selection Command" which is used to select and set the real command
 
     public CommandNode(RootNode root, App context) {
         super(root, context);
@@ -55,11 +61,27 @@ public class CommandNode extends Node {
             }
         });
         commandView.addView(deleteButton);
+
+        setCommand(new SelectionCommand(context, this));
+    }
+
+    private Component setUpSettingsUI() {
+        // todo show proper UI and add the command settings panel
+        // ->  command.getConfigurationPanel();
+        // ....
+        return new Component(context, new JFrame());
+    }
+
+    public void setCommand(Command command) {
+        this.command = command;
+
+        // update UI
+        setSettingsView(setUpSettingsUI());
     }
 
     @Override
     protected void render() {
-
+        command.execute();
     }
 
     @Override

@@ -1,7 +1,27 @@
 package de.spectrum.art.commands;
 
+import de.spectrum.App;
+import de.spectrum.art.Node;
+import de.spectrum.art.PaintContext;
+
+import javax.swing.*;
+
 /**
- * Created by Giorgio on 03.05.17.
+ * Abstract command. Superclass of all commands.
  */
-public class Command {
+public abstract class Command {
+    protected App context;
+    protected Node attachedNode;
+    protected PaintContext paintContext;
+
+    public Command(App context, Node attachedNode) {
+        this.context = context;
+        this.attachedNode = attachedNode;
+        this.paintContext = attachedNode.getRootNode().getPaintContext();
+    }
+
+    public abstract JPanel getConfigurationPanel();
+
+    public abstract void execute();
+
 }
