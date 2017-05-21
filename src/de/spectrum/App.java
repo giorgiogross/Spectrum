@@ -173,12 +173,10 @@ public class App extends PApplet implements OnMenuActionListener {
 
     public JFrame getNodeAdderFrame() {
         final JFrame frame = new JFrame("Add Node");
-        frame.setUndecorated(true);
         frame.setLocationRelativeTo(null);
-        frame.setSize(300, 30);
+        frame.setSize(240, 55);
         frame.setFocusable(false);
         frame.setAlwaysOnTop(true);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setVisible(false);
 
         return frame;
@@ -196,7 +194,6 @@ public class App extends PApplet implements OnMenuActionListener {
         frame.setFocusable(false);
         frame.setFocusableWindowState(false);
         frame.setAlwaysOnTop(true);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setVisible(showUI);
 
         return frame;
