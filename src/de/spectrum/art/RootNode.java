@@ -84,6 +84,7 @@ public class RootNode extends Node {
         setMenuView(menu);
         context.addOnFocusChangedListener(menu);
 
+        // todo add settings view to add vars, colors etc.
         // setSettingsView(settingsView);
 
         paintContext = new PaintContext(xCenter, yCenter);

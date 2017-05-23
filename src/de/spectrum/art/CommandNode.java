@@ -5,6 +5,7 @@ import de.spectrum.art.commands.Command;
 import de.spectrum.art.commands.SelectionCommand;
 import de.spectrum.gui.java.Component;
 import de.spectrum.gui.java.NodeAdder;
+import de.spectrum.gui.java.NodeSettingsMenu;
 import de.spectrum.gui.processing.CommandView;
 import de.spectrum.gui.processing.OnClickListener;
 import de.spectrum.gui.processing.View;
@@ -12,6 +13,8 @@ import de.spectrum.gui.processing.buttons.DeleteButton;
 import de.spectrum.gui.processing.buttons.PlusButton;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.WindowEvent;
 
 /**
  * Created by Giorgio on 03.05.17.
@@ -65,18 +68,17 @@ public class CommandNode extends Node {
         setCommand(new SelectionCommand(context, this));
     }
 
-    private Component setUpSettingsUI() {
-        // todo show proper UI and add the command settings panel
-        // ->  command.getConfigurationPanel();
-        // ....
-        return new Component(context, new JFrame());
-    }
-
     public void setCommand(Command command) {
         this.command = command;
 
         // update UI
-        setSettingsView(setUpSettingsUI());
+        boolean show = false;
+        if(getSettingsView() != null) {
+            if(getSettingsView().getView().isVisible()) show = true;
+            getSettingsView().getView().dispatchEvent(new WindowEvent(getSettingsView().getView(), WindowEvent.WINDOW_CLOSING));
+        }
+        setSettingsView(new NodeSettingsMenu(context, context.getSettingsFrame(), command.getConfigurationPanel()));
+        getSettingsView().getView().setVisible(show);
     }
 
     @Override
@@ -86,8 +88,7 @@ public class CommandNode extends Node {
 
     @Override
     protected void hideCustomUI() {
-        // todo hide settings view
-        // getSettingsView().setFrameVisibility(false);
+        getSettingsView().setFrameVisibility(false);
         if(adderView != null) adderView.setFrameVisibility(false);
     }
 }

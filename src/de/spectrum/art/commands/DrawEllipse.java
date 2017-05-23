@@ -4,13 +4,16 @@ import de.spectrum.App;
 import de.spectrum.art.Node;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * Created by Giorgio on 20.05.17.
  */
 public class DrawEllipse extends Command {
-    private int width;
-    private int height;
+    public static final String DESCRIPTION = "Ellipse";
+
+    private int width = 50;
+    private int height = 50;
 
     public DrawEllipse(App context, Node attachedNode) {
         super(context, attachedNode);
@@ -18,8 +21,10 @@ public class DrawEllipse extends Command {
 
     @Override
     public JPanel getConfigurationPanel() {
-        // todo create UI and manipulate width and height options
-        return null;
+        JPanel content = new JPanel(new BorderLayout());
+        content.add(new JLabel(DESCRIPTION), BorderLayout.NORTH);
+
+        return content;
     }
 
     @Override
