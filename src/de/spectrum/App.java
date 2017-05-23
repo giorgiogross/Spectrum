@@ -12,6 +12,10 @@ import processing.core.PApplet;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -168,6 +172,19 @@ public class App extends PApplet implements OnMenuActionListener {
         frame.setAlwaysOnTop(true);
         frame.setVisible(false);
 
+        frame.addWindowListener(new WindowAdapter() {
+
+            @Override
+            public void windowIconified(WindowEvent wEvt) {
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent wEvt) {
+                frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+            }
+
+        });
+
         return frame;
     }
 
@@ -192,6 +209,19 @@ public class App extends PApplet implements OnMenuActionListener {
         frame.setFocusable(false);
         frame.setAlwaysOnTop(true);
         frame.setVisible(false);
+
+        frame.addWindowListener(new WindowAdapter() {
+
+            @Override
+            public void windowIconified(WindowEvent wEvt) {
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent wEvt) {
+                frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+            }
+
+        });
 
         return frame;
     }
