@@ -33,6 +33,7 @@ public class App extends PApplet implements OnMenuActionListener {
     private Component appController; // todo event handler for play pause rewind etc..
 
     private boolean showUI = false;
+    private boolean isPaused = false;
     private int rootNodeIdCounter = 0;
 
     private int FPS = 30;
@@ -73,13 +74,14 @@ public class App extends PApplet implements OnMenuActionListener {
         background(0);
 
         // handle play/pause state
-
-        // draw all artworks
-        for (RootNode root : roots) {
-            root.draw(new ArrayList<Node>());
-        }
-        for (RootNode root : generatedRoots) {
-            root.draw(new ArrayList<Node>());
+        if(!isPaused) {
+            // draw all artworks
+            for (RootNode root : roots) {
+                root.draw(new ArrayList<Node>());
+            }
+            for (RootNode root : generatedRoots) {
+                root.draw(new ArrayList<Node>());
+            }
         }
 
         if (!showUI) return; // for performance reasons. App will still work without this line
@@ -244,7 +246,7 @@ public class App extends PApplet implements OnMenuActionListener {
 
     @Override
     public void onPlay() {
-
+        isPaused = false;
     }
 
     @Override
@@ -254,7 +256,7 @@ public class App extends PApplet implements OnMenuActionListener {
 
     @Override
     public void onPause() {
-
+        isPaused = true;
     }
 
     @Override

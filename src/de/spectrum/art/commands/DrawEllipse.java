@@ -12,8 +12,8 @@ import java.awt.*;
 public class DrawEllipse extends Command {
     public static final String DESCRIPTION = "Ellipse";
 
-    private int width = 50;
-    private int height = 50;
+    private int width = 0;
+    private int height = 0;
 
     public DrawEllipse(App context, Node attachedNode) {
         super(context, attachedNode);
@@ -23,6 +23,8 @@ public class DrawEllipse extends Command {
     public JPanel getConfigurationPanel() {
         JPanel content = new JPanel(new BorderLayout());
         content.add(new JLabel(DESCRIPTION), BorderLayout.NORTH);
+
+        // todo add configuration ui
 
         return content;
     }
