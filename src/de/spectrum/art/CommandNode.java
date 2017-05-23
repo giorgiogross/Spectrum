@@ -71,14 +71,10 @@ public class CommandNode extends Node {
     public void setCommand(Command command) {
         this.command = command;
 
-        // update UI
-        boolean show = false;
-        if(getSettingsView() != null) {
-            if(getSettingsView().getView().isVisible()) show = true;
-            getSettingsView().getView().dispatchEvent(new WindowEvent(getSettingsView().getView(), WindowEvent.WINDOW_CLOSING));
-        }
-        setSettingsView(new NodeSettingsMenu(context, context.getSettingsFrame(), command.getConfigurationPanel()));
-        getSettingsView().getView().setVisible(show);
+        if(getSettingsView() != null)
+            ((NodeSettingsMenu)getSettingsView()).replaceConfigurationPanel(command.getConfigurationPanel());
+        else
+            setSettingsView(new NodeSettingsMenu(context, context.getSettingsFrame(), command.getConfigurationPanel()));
     }
 
     @Override
