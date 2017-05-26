@@ -8,6 +8,7 @@ import de.spectrum.gui.OnMenuActionListener;
 import de.spectrum.gui.java.AppController;
 import de.spectrum.gui.java.Component;
 import de.spectrum.gui.java.RootMenu;
+import de.spectrum.gui.java.UiCreationHelper;
 import processing.core.PApplet;
 
 import javax.swing.*;
@@ -166,8 +167,8 @@ public class App extends PApplet implements OnMenuActionListener {
 
         final JFrame frame = new JFrame("Node Settings");
         frame.setLocationRelativeTo(null);
-        frame.setLocation((int)width - 350, (int)height - 400);
-        frame.setSize(350, 400);
+        frame.setLocation((int)width - UiCreationHelper.SETTINGS_UI_WIDTH, (int)height - UiCreationHelper.SETTINGS_UI_HEIGHT);
+        frame.setSize(UiCreationHelper.SETTINGS_UI_WIDTH, UiCreationHelper.SETTINGS_UI_HEIGHT);
         frame.setFocusable(false);
         frame.setAlwaysOnTop(true);
         frame.setVisible(false);

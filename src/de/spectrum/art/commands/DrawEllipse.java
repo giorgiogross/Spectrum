@@ -2,9 +2,12 @@ package de.spectrum.art.commands;
 
 import de.spectrum.App;
 import de.spectrum.art.Node;
+import de.spectrum.gui.java.UiCreationHelper;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Created by Giorgio on 20.05.17.
@@ -21,12 +24,22 @@ public class DrawEllipse extends Command {
 
     @Override
     public JPanel getConfigurationPanel() {
-        JPanel content = new JPanel(new BorderLayout());
-        content.add(new JLabel(DESCRIPTION), BorderLayout.NORTH);
+        JPanel settingsInteractionPanel = new JPanel();
+        settingsInteractionPanel.setLayout(new BoxLayout(settingsInteractionPanel, BoxLayout.Y_AXIS));
 
-        // todo add configuration ui
+        final JTextArea widthInput = new JTextArea();
+        final JTextArea heightInput = new JTextArea();
+        settingsInteractionPanel.add(UiCreationHelper
+                .createValueInputFieldPanel(new JLabel("Width:"), widthInput));
+        settingsInteractionPanel.add(UiCreationHelper
+                .createValueInputFieldPanel(new JLabel("Height:"), heightInput));
 
-        return content;
+        return UiCreationHelper.createSettingsContainer(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        }, DESCRIPTION, settingsInteractionPanel);
     }
 
     @Override

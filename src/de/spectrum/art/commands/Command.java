@@ -5,6 +5,7 @@ import de.spectrum.art.Node;
 import de.spectrum.art.PaintContext;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * Abstract command. Superclass of all commands.
