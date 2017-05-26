@@ -25,12 +25,13 @@ public class DrawEllipse extends Command {
     @Override
     public JPanel getConfigurationPanel() {
         JPanel settingsInteractionPanel = new JPanel();
-        settingsInteractionPanel.setLayout(new BoxLayout(settingsInteractionPanel, BoxLayout.Y_AXIS));
+        settingsInteractionPanel.setLayout(new BoxLayout(settingsInteractionPanel, BoxLayout.PAGE_AXIS));
 
-        final JTextArea widthInput = new JTextArea();
-        final JTextArea heightInput = new JTextArea();
+        final JTextField widthInput = new JTextField();
+        final JTextField heightInput = new JTextField();
         settingsInteractionPanel.add(UiCreationHelper
                 .createValueInputFieldPanel(new JLabel("Width:"), widthInput));
+        settingsInteractionPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         settingsInteractionPanel.add(UiCreationHelper
                 .createValueInputFieldPanel(new JLabel("Height:"), heightInput));
 
