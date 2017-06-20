@@ -26,7 +26,7 @@ public class Component {
     }
 
     public void setFrameVisibility(boolean isVisible) {
-        if (ui != null) ui.setVisible(isVisible);
+        if (ui != null && ui.isVisible() != isVisible) ui.setVisible(isVisible);
     }
 
 }

@@ -14,6 +14,19 @@ public class UiCreationHelper {
     public static int BORDER_SIZE = 10;
     public static int UI_ROW_HEIGHT = 25;
 
+
+    public static JPanel createValueValuePanel(JLabel valueDescription, JLabel value) {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+        panel.setPreferredSize(new Dimension(SETTINGS_UI_WIDTH - BORDER_SIZE * 2, UI_ROW_HEIGHT));
+        panel.setMaximumSize(new Dimension(SETTINGS_UI_WIDTH * 2 - BORDER_SIZE * 2, UI_ROW_HEIGHT));
+
+        panel.add(valueDescription);
+        panel.add(value);
+
+        return panel;
+    }
+
     public static JPanel createValueInputFieldPanel(JLabel valueDescription, JTextField inputField) {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
@@ -21,6 +34,22 @@ public class UiCreationHelper {
         panel.setMaximumSize(new Dimension(SETTINGS_UI_WIDTH * 2 - BORDER_SIZE * 2, UI_ROW_HEIGHT));
         DefaultCaret caret = (DefaultCaret)inputField.getCaret();
         caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+
+        panel.add(valueDescription);
+        panel.add(inputField);
+
+        return panel;
+    }
+
+    public static JPanel createInputFieldInputFieldPanel(JTextField valueDescription, JTextField inputField) {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+        panel.setPreferredSize(new Dimension(SETTINGS_UI_WIDTH - BORDER_SIZE * 2, UI_ROW_HEIGHT));
+        panel.setMaximumSize(new Dimension(SETTINGS_UI_WIDTH * 2 - BORDER_SIZE * 2, UI_ROW_HEIGHT));
+        DefaultCaret caret = (DefaultCaret)valueDescription.getCaret();
+        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+        DefaultCaret caret2 = (DefaultCaret)inputField.getCaret();
+        caret2.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 
         panel.add(valueDescription);
         panel.add(inputField);

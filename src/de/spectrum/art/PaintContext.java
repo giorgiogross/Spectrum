@@ -39,6 +39,18 @@ public class PaintContext {
         return colors;
     }
 
+    public Integer getIntVar(String id) {
+        return intVars.get(id);
+    }
+
+    public Float getFloatVar(String id) {
+        return floatVars.get(id);
+    }
+
+    public Color getColor(String id) {
+        return colors.get(id);
+    }
+
     public void addColor(String id, Color c){
         colors.put(id, c);
     }

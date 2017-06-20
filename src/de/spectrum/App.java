@@ -142,6 +142,8 @@ public class App extends PApplet implements OnMenuActionListener {
             RootNode mRoot = new RootNode(mouseX, mouseY, this);
             mRoot.getProcessingView().setVisible(showUI);
             roots.add(mRoot);
+
+            setFocusedComponent(null);
         }
     }
 
@@ -282,7 +284,6 @@ public class App extends PApplet implements OnMenuActionListener {
 
     @Override
     public void onPlay(RootNode rootNode) {
-
     }
 
     @Override

@@ -2,14 +2,18 @@ package de.spectrum.art;
 
 import de.spectrum.App;
 import de.spectrum.gui.OnFocusChangedListener;
+import de.spectrum.gui.java.*;
 import de.spectrum.gui.java.Component;
-import de.spectrum.gui.java.RootMenu;
 import de.spectrum.gui.processing.OnClickListener;
 import de.spectrum.gui.processing.RootView;
 import de.spectrum.gui.processing.View;
 import de.spectrum.gui.processing.buttons.DeleteButton;
 import de.spectrum.gui.processing.buttons.PlusButton;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 /**
@@ -23,6 +27,7 @@ public class RootNode extends Node {
     public RootNode(int xCenter, int yCenter, App context) {
         super(null, context);
         setId(context.getNewRootNodeId());
+        paintContext = new PaintContext(xCenter, yCenter);
 
         final RootView rootView = new RootView(xCenter, yCenter, getId(), context);
         rootView.addOnClickListener(new OnClickListener() {
@@ -84,10 +89,9 @@ public class RootNode extends Node {
         setMenuView(menu);
         context.addOnFocusChangedListener(menu);
 
-        // todo add settings view to add vars, colors etc.
-        // setSettingsView(settingsView);
-
-        paintContext = new PaintContext(xCenter, yCenter);
+        RootSettingsMenu settingsMenu = new RootSettingsMenu(context, this);
+        setSettingsView(settingsMenu);
+        context.addOnFocusChangedListener(settingsMenu);
     }
 
     public int getNewChildNodeId() {
@@ -119,11 +123,10 @@ public class RootNode extends Node {
     protected void hideCustomUI() {
         // hide command node ui
         setChildNodeVisibility(false, new ArrayList<Node>());
-        // re-show this node as setting al nodes invisible also affected this node
+        // re-show this node as setting all nodes invisible also affected this node
         getProcessingView().setVisible(true);
 
-        // todo hide settings view
-        // getSettingsView().setFrameVisibility(false);
         getMenuView().setFrameVisibility(false);
+        getSettingsView().setFrameVisibility(false);
     }
 }

@@ -18,6 +18,9 @@ public class DrawEllipse extends Command {
     private int width = 0;
     private int height = 0;
 
+    private String inWidth = "";
+    private String inHeight = "";
+
     public DrawEllipse(App context, Node attachedNode) {
         super(context, attachedNode);
     }
@@ -38,7 +41,8 @@ public class DrawEllipse extends Command {
         return UiCreationHelper.createSettingsContainer(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                inWidth = widthInput.getText();
+                inHeight = heightInput.getText();
             }
         }, DESCRIPTION, settingsInteractionPanel);
     }
@@ -49,6 +53,15 @@ public class DrawEllipse extends Command {
 
         if(paintContext.getCursor().isFill()) context.fill(paintContext.getCursor().getColor().getRGB());
         else context.noFill();
+
+        // todo parse the mathematical functions and set width, height and position accordingly
+        try {
+            width = Integer.parseInt(inWidth);
+            height = Integer.parseInt(inHeight);
+        } catch (NumberFormatException e) {
+            // abort
+            return;
+        }
 
         context.ellipse(
                 paintContext.getCursor().getX(),

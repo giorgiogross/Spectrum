@@ -40,7 +40,7 @@ public class RootMenu extends Component implements OnFocusChangedListener {
         bPlay.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                RootMenu.this.context.onPlay();
+                RootMenu.this.context.onPlay(attachedNode);
             }
         });
         getView().add(bPlay);

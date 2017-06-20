@@ -178,6 +178,7 @@ public abstract class Node {
     }
 
     public void setPaused(boolean paused) {
+        // todo remember to not execute variables manipulation and frame number increasement when paused
         isPaused = paused;
     }
 
