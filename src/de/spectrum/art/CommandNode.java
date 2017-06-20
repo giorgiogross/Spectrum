@@ -72,9 +72,9 @@ public class CommandNode extends Node {
         this.command = command;
 
         if(getSettingsView() != null)
-            ((NodeSettingsMenu)getSettingsView()).replaceConfigurationPanel(command.getConfigurationPanel());
+            ((NodeSettingsMenu)getSettingsView()).replaceConfigurationPanel(command.getConfigurationPanel(), command.getTitle());
         else
-            setSettingsView(new NodeSettingsMenu(context, context.getSettingsFrame(), command.getConfigurationPanel()));
+            setSettingsView(new NodeSettingsMenu(context, context.getSettingsFrame(command.getTitle()), command.getConfigurationPanel()));
     }
 
     @Override

@@ -10,6 +10,14 @@ import java.util.HashMap;
  * parent root node to a sub root node to e.g. use a different center location for painting.
  */
 public class PaintContext {
+    // basic variables
+    public static final String VAR_X_GLOB = "x_glob";
+    public static final String VAR_Y_GLOB = "y_glob";
+    public static final String VAR_X_LOC = "x_loc";
+    public static final String VAR_Y_LOC = "y_loc";
+    public static final String COLOR_BLACK = "cl_black";
+    public static final String COLOR_WHITE = "cl_white";
+
     private Cursor cursor;
     private HashMap<String, Integer> intVars;
     private HashMap<String, Float> floatVars;
@@ -21,6 +29,12 @@ public class PaintContext {
         intVars = new HashMap<String, Integer>();
         floatVars = new HashMap<String, Float>();
         colors = new HashMap<String, Color>();
+
+        // init static vars
+        addIntVar(VAR_X_GLOB, getCursor().getxBase());
+        addIntVar(VAR_Y_GLOB, getCursor().getyBase());
+        addIntVar(VAR_X_LOC, getCursor().getX());
+        addIntVar(VAR_Y_LOC, getCursor().getY());
     }
 
     public Cursor getCursor() {

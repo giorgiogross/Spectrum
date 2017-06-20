@@ -6,6 +6,7 @@ import de.spectrum.art.PaintContext;
 import de.spectrum.gui.OnFocusChangedListener;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
@@ -18,63 +19,58 @@ public class RootSettingsMenu extends Component implements OnFocusChangedListene
     private App context;
 
     private NodeSettingsMenu settingsMenu;
-    private JPanel varsPanel;
+    private PaintContext paintContext;
+    private Box varsPanel;
 
     public RootSettingsMenu(App context, final RootNode attachedNode) {
-        super(context, context.getSettingsFrame());
+        super(context, context.getSettingsFrame("ROOT" + attachedNode.getId()));
         this.context = context;
         this.attachedNode = attachedNode;
+        this.paintContext = attachedNode.getPaintContext();
 
-        // init static vars
-        final de.spectrum.art.PaintContext pc = attachedNode.getPaintContext();
-        pc.addIntVar("x_glob", pc.getCursor().getxBase());
-        pc.addIntVar("y_glob", pc.getCursor().getyBase());
-        pc.addIntVar("x_loc", pc.getCursor().getX());
-        pc.addIntVar("y_loc", pc.getCursor().getY());
-
-        final JPanel settingsInteractionPanel = new JPanel();
-        settingsInteractionPanel.setLayout(new BoxLayout(settingsInteractionPanel, BoxLayout.Y_AXIS));
+        final Box settingsInteractionPanel = Box.createVerticalBox();
 
         // todo add views to add vars, colors etc.
         /*
         Variables configuration
          */
-        varsPanel = new JPanel();
-        updateVarsPanel(varsPanel, pc);
+        // Display existing variables
+        varsPanel = Box.createVerticalBox();
+        updateVarsPanel(varsPanel, paintContext);
         settingsInteractionPanel.add(varsPanel);
+
+        // UI to add a new variable
         final JTextField varDescription = new JTextField();
         final JTextField varValue = new JTextField();
         settingsInteractionPanel.add(UiCreationHelper
                 .createInputFieldInputFieldPanel(varDescription, varValue));
-        Box addVarBox = Box.createVerticalBox();
-        JButton addVarButton = new JButton("Add");
-        addVarButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String descr = varDescription.getText();
-                String val = varValue.getText();
-                if(descr.isEmpty() || val.isEmpty()) return;
 
-                if(val.matches("[-]?[0-9]+.[0-9]+")) {
-                    Float varVal = Float.parseFloat(val);
+        settingsInteractionPanel.add(UiCreationHelper.createRightButtonPanel(
+                "ADD",
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        String descr = varDescription.getText();
+                        String val = varValue.getText();
+                        if (descr.isEmpty() || val.isEmpty()) return;
 
-                    pc.addFloatVar(descr, varVal);
-                } else if(val.matches("[-]?[0-9]+")) {
-                    Integer varVal = Integer.parseInt(val);
-                    pc.addIntVar(descr, varVal);
-                }
+                        if (val.matches("[-]?[0-9]+.[0-9]+")) {
+                            Float varVal = Float.parseFloat(val);
 
-                varsPanel.removeAll();
-                updateVarsPanel(varsPanel, pc);
-                varDescription.setText("");
-                varValue.setText("");
-                getView().validate();
-            }
-        });
-        // addVarButton.setAlignmentX(java.awt.Component.RIGHT_ALIGNMENT);
-        addVarBox.add(Box.createHorizontalGlue());
-        addVarBox.add(addVarButton);
-        settingsInteractionPanel.add(addVarBox);
+                            paintContext.addFloatVar(descr, varVal);
+                        } else if (val.matches("[-]?[0-9]+")) {
+                            Integer varVal = Integer.parseInt(val);
+                            paintContext.addIntVar(descr, varVal);
+                        } else return;
+
+                        varsPanel.removeAll();
+                        updateVarsPanel(varsPanel, paintContext);
+                        varDescription.setText("");
+                        varValue.setText("");
+                        getView().validate();
+                    }
+                })
+        );
 
         settingsMenu = new NodeSettingsMenu(context, getView(),
                 UiCreationHelper.createSettingsContainer(new ActionListener() {
@@ -82,22 +78,26 @@ public class RootSettingsMenu extends Component implements OnFocusChangedListene
                     public void actionPerformed(ActionEvent e) {
 
                     }
-                }, "ROOT" + attachedNode.getId(), settingsInteractionPanel)
+                }, settingsInteractionPanel)
         );
     }
 
-    private void updateVarsPanel(JPanel varsPanel, PaintContext pc) {
-        varsPanel.setLayout(new BoxLayout(varsPanel, BoxLayout.PAGE_AXIS));
-
+    private void updateVarsPanel(Box varsPanel, PaintContext pc) {
         HashMap<String, Integer> intVars = pc.getIntVars();
         HashMap<String, Float> floatVars = pc.getFloatVars();
         int numVars = intVars.size() + pc.getFloatVars().size();
 
-        for(String key : intVars.keySet()) {
+        JLabel title = new JLabel("Variables");
+        title.setAlignmentY(java.awt.Component.TOP_ALIGNMENT);
+        title.setAlignmentX(java.awt.Component.LEFT_ALIGNMENT);
+        varsPanel.add(title);
+        varsPanel.add(Box.createVerticalStrut(5));
+
+        for (String key : intVars.keySet()) {
             varsPanel.add(UiCreationHelper
                     .createValueValuePanel(new JLabel(key + ": "), new JLabel("" + pc.getIntVar(key))));
         }
-        for(String key : floatVars.keySet()) {
+        for (String key : floatVars.keySet()) {
             varsPanel.add(UiCreationHelper
                     .createValueValuePanel(new JLabel(key + ": "), new JLabel("" + pc.getFloatVar(key))));
         }
@@ -105,10 +105,21 @@ public class RootSettingsMenu extends Component implements OnFocusChangedListene
 
     @Override
     public void onFocusChanged(Component c) {
-        if(c == null || !c.equals(attachedNode.getProcessingView())) {
+        if (c == null || !c.equals(attachedNode.getProcessingView())) {
             setFrameVisibility(false);
             return;
         }
         setFrameVisibility(true);
+        validatePanels();
+    }
+
+    /**
+     * Re-creates all content panels so that they show the latest data
+     */
+    private void validatePanels() {
+        varsPanel.removeAll();
+        updateVarsPanel(varsPanel, paintContext);
+
+        getView().validate();
     }
 }

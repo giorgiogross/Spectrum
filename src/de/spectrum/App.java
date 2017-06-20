@@ -162,12 +162,12 @@ public class App extends PApplet implements OnMenuActionListener {
      *
      * @return the frame
      */
-    public JFrame getSettingsFrame() {
+    public JFrame getSettingsFrame(String title) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         double width = screenSize.getWidth();
         double height = screenSize.getHeight();
 
-        final JFrame frame = new JFrame("Node Settings");
+        final JFrame frame = new JFrame(title);
         frame.setLocationRelativeTo(null);
         frame.setLocation((int)width - UiCreationHelper.SETTINGS_UI_WIDTH, (int)height - UiCreationHelper.SETTINGS_UI_HEIGHT);
         frame.setSize(UiCreationHelper.SETTINGS_UI_WIDTH, UiCreationHelper.SETTINGS_UI_HEIGHT);

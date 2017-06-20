@@ -22,13 +22,12 @@ public class DrawEllipse extends Command {
     private String inHeight = "";
 
     public DrawEllipse(App context, Node attachedNode) {
-        super(context, attachedNode);
+        super(context, attachedNode, DESCRIPTION);
     }
 
     @Override
-    public JPanel getConfigurationPanel() {
-        JPanel settingsInteractionPanel = new JPanel();
-        settingsInteractionPanel.setLayout(new BoxLayout(settingsInteractionPanel, BoxLayout.PAGE_AXIS));
+    public Component getConfigurationPanel() {
+        Box settingsInteractionPanel = Box.createVerticalBox();
 
         final JTextField widthInput = new JTextField();
         final JTextField heightInput = new JTextField();
@@ -44,7 +43,7 @@ public class DrawEllipse extends Command {
                 inWidth = widthInput.getText();
                 inHeight = heightInput.getText();
             }
-        }, DESCRIPTION, settingsInteractionPanel);
+        }, settingsInteractionPanel);
     }
 
     @Override

@@ -10,22 +10,25 @@ import java.awt.*;
  */
 public class NodeSettingsMenu extends Component {
     private JScrollPane scroller = null;
-    private JPanel configurationPanel = null;
+    private java.awt.Component configurationPanel = null;
 
-    public NodeSettingsMenu(App context, JFrame ui, JPanel configurationPanel) {
+    public NodeSettingsMenu(App context, JFrame ui, java.awt.Component configurationPanel) {
         super(context, ui);
         this.configurationPanel = configurationPanel;
-
-        getView().setLayout(new BorderLayout());
 
         scroller = new JScrollPane();
         replaceConfigurationPanel(configurationPanel);
         scroller.setPreferredSize(new Dimension(getView().getWidth(), getView().getHeight()));
 
-        getView().add(scroller, BorderLayout.CENTER);
+        getView().add(scroller);
     }
 
-    public void replaceConfigurationPanel(JPanel configurationPanel) {
+    public void replaceConfigurationPanel(java.awt.Component configurationPanel, String title) {
+        getView().setTitle(title);
+        replaceConfigurationPanel(configurationPanel);
+    }
+
+    public void replaceConfigurationPanel(java.awt.Component configurationPanel) {
         this.configurationPanel = configurationPanel;
         scroller.setViewportView(configurationPanel);
     }

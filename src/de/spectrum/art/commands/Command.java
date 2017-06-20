@@ -14,14 +14,20 @@ public abstract class Command {
     protected App context;
     protected Node attachedNode;
     protected PaintContext paintContext;
+    private String title = "Command";
 
-    public Command(App context, Node attachedNode) {
+    public Command(App context, Node attachedNode, String title) {
         this.context = context;
         this.attachedNode = attachedNode;
         this.paintContext = attachedNode.getRootNode().getPaintContext();
+        this.title = title;
     }
 
-    public abstract JPanel getConfigurationPanel();
+    public String getTitle() {
+        return title;
+    }
+
+    public abstract Component getConfigurationPanel();
 
     public abstract void execute();
 
