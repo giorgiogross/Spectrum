@@ -7,7 +7,7 @@ import java.awt.*;
  */
 public class Cursor {
     //inti with default values
-    private Color color = new Color(250, 250, 250, 250);
+    private Color color = new Color(0, 0, 0, 255);
 
     private int xBase = 0;
     private int yBase = 0;

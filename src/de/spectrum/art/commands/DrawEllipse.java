@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 
 /**
  * Created by Giorgio on 20.05.17.
@@ -42,6 +43,8 @@ public class DrawEllipse extends Command {
             public void actionPerformed(ActionEvent e) {
                 inWidth = widthInput.getText();
                 inHeight = heightInput.getText();
+                attachedNode.getSettingsView().getView().dispatchEvent(
+                        new WindowEvent(attachedNode.getSettingsView().getView(), WindowEvent.WINDOW_CLOSING));
             }
         }, settingsInteractionPanel);
     }

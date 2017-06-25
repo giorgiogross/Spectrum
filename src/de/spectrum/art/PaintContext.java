@@ -11,6 +11,8 @@ import java.util.HashMap;
  */
 public class PaintContext {
     // basic variables
+    public static final String VAR_X_STAT = "x_stat";
+    public static final String VAR_Y_STAT = "y_stat";
     public static final String VAR_X_GLOB = "x_glob";
     public static final String VAR_Y_GLOB = "y_glob";
     public static final String VAR_X_LOC = "x_loc";
@@ -23,7 +25,10 @@ public class PaintContext {
     private HashMap<String, Float> floatVars;
     private HashMap<String, Color> colors;
 
-    public PaintContext (int xBase, int yBase) {
+    private RootNode attachedNode;
+
+    public PaintContext(RootNode rootNode, int xBase, int yBase) {
+        this.attachedNode = rootNode;
         cursor = new Cursor(xBase, yBase);
 
         intVars = new HashMap<String, Integer>();
@@ -31,10 +36,15 @@ public class PaintContext {
         colors = new HashMap<String, Color>();
 
         // init static vars
-        addIntVar(VAR_X_GLOB, getCursor().getxBase());
-        addIntVar(VAR_Y_GLOB, getCursor().getyBase());
-        addIntVar(VAR_X_LOC, getCursor().getX());
-        addIntVar(VAR_Y_LOC, getCursor().getY());
+        addIntVar(VAR_X_STAT, getCursor().getxBase());
+        addIntVar(VAR_X_GLOB, getCursor().getX());
+        addIntVar(VAR_X_LOC, getCursor().getxBase() - getCursor().getX());
+        addIntVar(VAR_Y_STAT, getCursor().getyBase());
+        addIntVar(VAR_Y_GLOB, getCursor().getY());
+        addIntVar(VAR_Y_LOC, getCursor().getyBase() - getCursor().getY());
+
+        addColor(COLOR_BLACK, new Color(0, 0, 0, 255));
+        addColor(COLOR_WHITE, new Color(255, 255, 255, 255));
     }
 
     public Cursor getCursor() {
@@ -71,6 +81,16 @@ public class PaintContext {
 
     public void addIntVar(String id, int i){
         intVars.put(id, i);
+
+        // update root node ui position if it is updated
+        if(id.equals(VAR_X_STAT)) {
+            attachedNode.getProcessingView().setX(i);
+            attachedNode.getMenuView().validateLocation();
+        }
+        if(id.equals(VAR_Y_STAT)) {
+            attachedNode.getProcessingView().setY(i);
+            attachedNode.getMenuView().validateLocation();
+        }
     }
 
     public void addFloatVar(String id, float f){

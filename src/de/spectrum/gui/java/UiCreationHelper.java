@@ -10,19 +10,27 @@ import java.awt.event.ActionListener;
  * Created by Giorgio on 25.05.17.
  */
 public class UiCreationHelper {
-    public static int SETTINGS_UI_WIDTH = 350;
-    public static int SETTINGS_UI_HEIGHT = 400;
+    public static int SETTINGS_UI_WIDTH = 400;
+    public static int SETTINGS_UI_HEIGHT = 500;
     public static int BORDER_SIZE = 10;
     public static int UI_ROW_HEIGHT = 25;
 
 
-    public static Box createValueValuePanel(JLabel valueDescription, JLabel value) {
+    public static Box createValueValuePanel(JLabel valueDescription, JLabel value, ActionListener deleteAction) {
         Box panel = Box.createHorizontalBox();
         panel.setPreferredSize(new Dimension(SETTINGS_UI_WIDTH - BORDER_SIZE * 2, UI_ROW_HEIGHT));
-        panel.setMaximumSize(new Dimension(SETTINGS_UI_WIDTH * 2 - BORDER_SIZE * 2, UI_ROW_HEIGHT));
+        panel.setMaximumSize(new Dimension(Integer.MAX_VALUE, UI_ROW_HEIGHT));
+        panel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         panel.add(valueDescription);
         panel.add(value);
+
+        if(deleteAction != null) {
+            JButton del = new JButton("X");
+            del.addActionListener(deleteAction);
+            panel.add(Box.createHorizontalGlue());
+            panel.add(del);
+        }
 
         panel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
@@ -32,7 +40,7 @@ public class UiCreationHelper {
     public static Box createValueInputFieldPanel(JLabel valueDescription, JTextField inputField) {
         Box panel = Box.createHorizontalBox();
         panel.setPreferredSize(new Dimension(SETTINGS_UI_WIDTH - BORDER_SIZE * 2, UI_ROW_HEIGHT));
-        panel.setMaximumSize(new Dimension(SETTINGS_UI_WIDTH * 2 - BORDER_SIZE * 2, UI_ROW_HEIGHT));
+        panel.setMaximumSize(new Dimension(Integer.MAX_VALUE, UI_ROW_HEIGHT));
         DefaultCaret caret = (DefaultCaret)inputField.getCaret();
         caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 
@@ -44,18 +52,16 @@ public class UiCreationHelper {
         return panel;
     }
 
-    public static Box createInputFieldInputFieldPanel(JTextField valueDescription, JTextField inputField) {
+    public static Box createNInputFieldPanel(JTextField ... jTextFields) {
         Box panel = Box.createHorizontalBox();
         panel.setPreferredSize(new Dimension(SETTINGS_UI_WIDTH - BORDER_SIZE * 2, UI_ROW_HEIGHT));
-        panel.setMaximumSize(new Dimension(SETTINGS_UI_WIDTH * 2 - BORDER_SIZE * 2, UI_ROW_HEIGHT));
-        DefaultCaret caret = (DefaultCaret)valueDescription.getCaret();
-        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
-        DefaultCaret caret2 = (DefaultCaret)inputField.getCaret();
-        caret2.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+        panel.setMaximumSize(new Dimension(Integer.MAX_VALUE, UI_ROW_HEIGHT));
 
-        panel.add(valueDescription);
-        panel.add(inputField);
-
+        for (JTextField tf : jTextFields) {
+            DefaultCaret caret = (DefaultCaret)tf.getCaret();
+            caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+            panel.add(tf);
+        }
         panel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         return panel;
@@ -64,7 +70,7 @@ public class UiCreationHelper {
     public static Box createRightButtonPanel(String title, ActionListener listener) {
         Box panel = Box.createVerticalBox();
         panel.setPreferredSize(new Dimension(SETTINGS_UI_WIDTH - BORDER_SIZE * 2, UI_ROW_HEIGHT));
-        panel.setMaximumSize(new Dimension(SETTINGS_UI_WIDTH * 2 - BORDER_SIZE * 2, UI_ROW_HEIGHT));
+        panel.setMaximumSize(new Dimension(Integer.MAX_VALUE, UI_ROW_HEIGHT));
         panel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         JButton button = new JButton(title);
@@ -72,6 +78,14 @@ public class UiCreationHelper {
         button.setAlignmentX(Component.RIGHT_ALIGNMENT);
         panel.add(button);
 
+        return panel;
+    }
+
+    public static Box createHorizontalDivider(int height) {
+        Box panel = Box.createVerticalBox();
+        panel.add(Box.createVerticalStrut(height / 2));
+        panel.add(new JSeparator(SwingConstants.HORIZONTAL));
+        panel.add(Box.createVerticalStrut(height / 2));
         return panel;
     }
 

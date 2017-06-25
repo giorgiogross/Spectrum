@@ -27,7 +27,6 @@ public class RootNode extends Node {
     public RootNode(int xCenter, int yCenter, App context) {
         super(null, context);
         setId(context.getNewRootNodeId());
-        paintContext = new PaintContext(xCenter, yCenter);
 
         final RootView rootView = new RootView(xCenter, yCenter, getId(), context);
         rootView.addOnClickListener(new OnClickListener() {
@@ -89,7 +88,9 @@ public class RootNode extends Node {
         setMenuView(menu);
         context.addOnFocusChangedListener(menu);
 
-        RootSettingsMenu settingsMenu = new RootSettingsMenu(context, this);
+        paintContext = new PaintContext(this, xCenter, yCenter);
+
+        RootSettingsMenu settingsMenu = new RootSettingsMenu(context, this, getPaintContext());
         setSettingsView(settingsMenu);
         context.addOnFocusChangedListener(settingsMenu);
     }

@@ -25,6 +25,13 @@ public class Component {
         return ui;
     }
 
+    /**
+     * Recalculate frame location
+     */
+    public void validateLocation() {
+        // void
+    }
+
     public void setFrameVisibility(boolean isVisible) {
         if (ui != null && ui.isVisible() != isVisible) ui.setVisible(isVisible);
     }

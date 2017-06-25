@@ -44,4 +44,14 @@ public class RootView extends View implements OnFocusChangedListener {
         }
         setFocused(true);
     }
+
+    @Override
+    public void setX(int x){
+        super.setX(x - getWidth() / 2);
+    }
+
+    @Override
+    public void setY(int y){
+        super.setY(y - getHeight() / 2);
+    }
 }

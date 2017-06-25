@@ -17,7 +17,6 @@ public class RootMenu extends Component implements OnFocusChangedListener {
     private RootNode attachedNode;
 
     private JButton bPlay;
-    private JButton bDelete;
     private JButton bRevert;
     private JButton bLayerUp;
     private JButton bLayerDown;
@@ -25,14 +24,10 @@ public class RootMenu extends Component implements OnFocusChangedListener {
 
     public RootMenu(App context, final RootNode attachedNode) {
         super(context, context.getRootMenuFrame());
-        getView().setLocation(
-                attachedNode.getProcessingView().getX() + attachedNode.getProcessingView().getWidth() / 2 - ui.getWidth() / 2,
-                attachedNode.getProcessingView().getY() - ui.getHeight()
-        );
         this.context = context;
         this.attachedNode = attachedNode;
+        validateLocation();
 
-        // todo add proper ui code here
         FlowLayout layout = new FlowLayout();
         getView().setLayout(layout);
 
@@ -75,6 +70,14 @@ public class RootMenu extends Component implements OnFocusChangedListener {
         });
         getView().add(bLayerDown);
 
+    }
+
+    @Override
+    public void validateLocation() {
+        getView().setLocation(
+                attachedNode.getProcessingView().getX() + attachedNode.getProcessingView().getWidth() / 2 - ui.getWidth() / 2,
+                attachedNode.getProcessingView().getY() - ui.getHeight()
+        );
     }
 
     public void updateLayerNumber() {
