@@ -11,6 +11,10 @@ import java.awt.event.ActionListener;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
+import static de.spectrum.gui.java.UiCreationHelper.BORDER_SIZE;
+import static de.spectrum.gui.java.UiCreationHelper.SETTINGS_UI_WIDTH;
+import static de.spectrum.gui.java.UiCreationHelper.UI_ROW_HEIGHT;
+
 /**
  * Command used as placeholder. Shows UI to select actual Command to be used with the attached Node.
  */
@@ -24,16 +28,19 @@ public class SelectionCommand extends Command {
     @Override
     public Component getConfigurationPanel() {
         // call ((CommandNode)attachedNode).setSettingsView(...); wehn command selected
-        JPanel panel = new JPanel(new FlowLayout());
+        Box panel = Box.createHorizontalBox();
+        panel.setPreferredSize(new Dimension(SETTINGS_UI_WIDTH - BORDER_SIZE * 2, UI_ROW_HEIGHT * 2));
+        panel.setMaximumSize(new Dimension(Integer.MAX_VALUE, UI_ROW_HEIGHT * 2));
+        panel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        panel.setOpaque(true);
+        panel.setBackground(new Color(220,220,220));
 
         ArrayList<String> cmdNames = CommandRegistry.GetCommands();
-        cmdNames.add(0, "Select...");
 
         final JComboBox cbSelect = new JComboBox(cmdNames.toArray());
         cbSelect.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(cbSelect.getSelectedIndex() == 0) return;
                 try {
                     ((CommandNode)attachedNode).setCommand(
                             CommandRegistry.GetClass((String)cbSelect.getSelectedItem())

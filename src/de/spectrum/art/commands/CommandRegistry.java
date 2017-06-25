@@ -2,14 +2,16 @@ package de.spectrum.art.commands;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
  * Created by Giorgio on 23.05.17.
  */
 public class CommandRegistry {
-    public static Map<String, Class<? extends Command>> registry = new HashMap<String, Class<? extends Command>>() {
+    public static LinkedHashMap<String, Class<? extends Command>> registry = new LinkedHashMap<String, Class<? extends Command>>() {
         {
+            put(NullCommand.DESCRIPTION, NullCommand.class);
             put(DrawEllipse.DESCRIPTION, DrawEllipse.class);
         }
     };
