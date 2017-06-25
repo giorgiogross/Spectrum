@@ -12,6 +12,8 @@ import java.util.LinkedHashMap;
  * parent root node to a sub root node to e.g. use a different center location for painting.
  */
 public class PaintContext {
+    private ArrayList<OnPaintContextChangedListener> listeners = new ArrayList<>();
+
     // basic variables
     public static final String VAR_X_STAT = "x_stat";
     public static final String VAR_Y_STAT = "y_stat";
@@ -79,38 +81,55 @@ public class PaintContext {
         return colors.get(id);
     }
 
-    public void addColor(String id, Color c){
+    public void addColor(String id, Color c) {
         colors.put(id, c);
+        notifyPaintContextChanged();
     }
 
-    public void addIntVar(String id, int i){
+    public void addIntVar(String id, int i) {
         intVars.put(id, i);
 
-        // update root node ui position if it is updated
-        if(id.equals(VAR_X_STAT)) {
-            attachedNode.updatePosition(i, cursor.getyBase());
+        if (id.equals(VAR_X_STAT)) {
             cursor.relocateBase(i, cursor.getyBase());
         }
-        if(id.equals(VAR_Y_STAT)) {
-            attachedNode.updatePosition(cursor.getxBase(), i);
+        if (id.equals(VAR_Y_STAT)) {
             cursor.relocateBase(cursor.getxBase(), i);
         }
+
+        notifyPaintContextChanged();
     }
 
-    public void addFloatVar(String id, float f){
+    public void addFloatVar(String id, float f) {
         floatVars.put(id, f);
+        notifyPaintContextChanged();
     }
 
     public void removeColor(String id) {
         colors.remove(id);
+        notifyPaintContextChanged();
     }
 
     public void removeIntVar(String id) {
         intVars.remove(id);
+        notifyPaintContextChanged();
     }
 
     public void removeFloatVar(String id) {
         floatVars.remove(id);
+        notifyPaintContextChanged();
+    }
+
+    public void register(OnPaintContextChangedListener listener) {
+        this.listeners.add(listener);
+    }
+
+    public void unregister(OnPaintContextChangedListener listener) {
+        this.listeners.remove(listener);
+    }
+
+    public void notifyPaintContextChanged() {
+        for (OnPaintContextChangedListener listener : listeners)
+            if(listener != null) listener.onPaintContextChanged();
     }
 
 }

@@ -19,7 +19,7 @@ import java.util.ArrayList;
 /**
  * Encapsulates all data structures and methods linked with a root node.
  */
-public class RootNode extends Node {
+public class RootNode extends Node implements OnPaintContextChangedListener {
     private int currentFrame = 0;
     private int childNodeIdCounter = 1;
     private PaintContext paintContext;
@@ -77,6 +77,7 @@ public class RootNode extends Node {
         context.addOnFocusChangedListener(menu);
 
         paintContext = new PaintContext(this, xCenter, yCenter);
+        paintContext.register(this);
 
         RootSettingsMenu settingsMenu = new RootSettingsMenu(context, this, getPaintContext());
         setSettingsView(settingsMenu);
@@ -103,13 +104,14 @@ public class RootNode extends Node {
         return paintContext;
     }
 
-    public void updatePosition(int x, int y) {
-        getProcessingView().setX(x);
-        getProcessingView().setY(y);
+    public void updatePosition() {
+        getProcessingView().setX(paintContext.getCursor().getxBase());
+        getProcessingView().setY(paintContext.getCursor().getyBase());
         getMenuView().validateLocation();
         rearrangeChildNodes(new ArrayList<>());
-
     }
+
+
 
     @Override
     protected void render() {
@@ -125,5 +127,10 @@ public class RootNode extends Node {
 
         getMenuView().setFrameVisibility(false);
         getSettingsView().setFrameVisibility(false);
+    }
+
+    @Override
+    public void onPaintContextChanged() {
+        updatePosition();
     }
 }

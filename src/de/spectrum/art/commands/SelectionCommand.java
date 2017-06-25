@@ -38,23 +38,20 @@ public class SelectionCommand extends Command {
         ArrayList<String> cmdNames = CommandRegistry.GetCommands();
 
         final JComboBox cbSelect = new JComboBox(cmdNames.toArray());
-        cbSelect.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    ((CommandNode)attachedNode).setCommand(
-                            CommandRegistry.GetClass((String)cbSelect.getSelectedItem())
-                                    .getDeclaredConstructor(App.class, Node.class).newInstance(context, attachedNode)
-                    );
-                } catch (InstantiationException e1) {
-                    e1.printStackTrace();
-                } catch (IllegalAccessException e1) {
-                    e1.printStackTrace();
-                } catch (NoSuchMethodException e1) {
-                    e1.printStackTrace();
-                } catch (InvocationTargetException e1) {
-                    e1.printStackTrace();
-                }
+        cbSelect.addActionListener(e -> {
+            try {
+                ((CommandNode)attachedNode).setCommand(
+                        CommandRegistry.GetClass((String)cbSelect.getSelectedItem())
+                                .getDeclaredConstructor(App.class, Node.class).newInstance(context, attachedNode)
+                );
+            } catch (InstantiationException e1) {
+                e1.printStackTrace();
+            } catch (IllegalAccessException e1) {
+                e1.printStackTrace();
+            } catch (NoSuchMethodException e1) {
+                e1.printStackTrace();
+            } catch (InvocationTargetException e1) {
+                e1.printStackTrace();
             }
         });
         panel.add(cbSelect);

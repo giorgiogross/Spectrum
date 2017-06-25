@@ -15,7 +15,7 @@ import java.util.HashMap;
 /**
  * Created by Giorgio on 19.06.17.
  */
-public class RootSettingsMenu extends Component implements OnFocusChangedListener {
+public class RootSettingsMenu extends Component implements OnFocusChangedListener, OnPaintContextChangedListener {
     private RootNode attachedNode;
     private App context;
 
@@ -29,6 +29,7 @@ public class RootSettingsMenu extends Component implements OnFocusChangedListene
         this.context = context;
         this.attachedNode = attachedNode;
         this.paintContext = paintCtx;
+        this.paintContext.register(this);
 
         final Box settingsInteractionPanel = Box.createVerticalBox();
 
@@ -64,7 +65,6 @@ public class RootSettingsMenu extends Component implements OnFocusChangedListene
 
                         varDescription.setText("");
                         varValue.setText("");
-                        validatePanels();
                     }
                 })
         );
@@ -110,7 +110,6 @@ public class RootSettingsMenu extends Component implements OnFocusChangedListene
                     colorG.setText("");
                     colorB.setText("");
                     colorA.setText("");
-                    validatePanels();
                 })
         );
 
@@ -134,7 +133,6 @@ public class RootSettingsMenu extends Component implements OnFocusChangedListene
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     paintContext.removeColor(key);
-                    validatePanels();
                 }
             };
             colorsPanel.add(UiCreationHelper.createValueValuePanel(
@@ -160,7 +158,6 @@ public class RootSettingsMenu extends Component implements OnFocusChangedListene
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     paintContext.removeIntVar(key);
-                    validatePanels();
                 }
             };
             varsPanel.add(UiCreationHelper
@@ -169,7 +166,6 @@ public class RootSettingsMenu extends Component implements OnFocusChangedListene
         for (final String key : floatVars.keySet()) {
             ActionListener delListener = e -> {
                 paintContext.removeFloatVar(key);
-                validatePanels();
             };
             varsPanel.add(UiCreationHelper
                     .createValueValuePanel(new JLabel(key + ": "), new JLabel("" + paintContext.getFloatVar(key)), delListener));
@@ -183,7 +179,6 @@ public class RootSettingsMenu extends Component implements OnFocusChangedListene
             return;
         }
         setFrameVisibility(true);
-        validatePanels();
     }
 
     /**
@@ -197,5 +192,10 @@ public class RootSettingsMenu extends Component implements OnFocusChangedListene
         updateColorsPanel(RootSettingsMenu.this.colorsPanel);
 
         getView().validate();
+    }
+
+    @Override
+    public void onPaintContextChanged() {
+        validatePanels();
     }
 }

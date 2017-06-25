@@ -13,6 +13,7 @@ public class CommandRegistry {
         {
             put(NullCommand.DESCRIPTION, NullCommand.class);
             put(DrawEllipse.DESCRIPTION, DrawEllipse.class);
+            put(UpdateVariable.DESCRIPTION, UpdateVariable.class);
         }
     };
 
