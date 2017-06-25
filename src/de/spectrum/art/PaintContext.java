@@ -5,6 +5,7 @@ import de.spectrum.art.toolbox.Cursor;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /**
  * Contains all variables, cursors, colors etc of a root node which will be visible to child nodes. Can be passed from a
@@ -22,9 +23,9 @@ public class PaintContext {
     public static final String COLOR_WHITE = "cl_white";
 
     private Cursor cursor;
-    private HashMap<String, Integer> intVars;
-    private HashMap<String, Float> floatVars;
-    private HashMap<String, Color> colors;
+    private LinkedHashMap<String, Integer> intVars;
+    private LinkedHashMap<String, Float> floatVars;
+    private LinkedHashMap<String, Color> colors;
 
     private RootNode attachedNode;
 
@@ -34,9 +35,9 @@ public class PaintContext {
 
         // todo remember to update cursor when x_stat or x_loc is changed through VarUpdateCmd.
 
-        intVars = new HashMap<String, Integer>();
-        floatVars = new HashMap<String, Float>();
-        colors = new HashMap<String, Color>();
+        intVars = new LinkedHashMap<>();
+        floatVars = new LinkedHashMap<>();
+        colors = new LinkedHashMap<>();
 
         // init static vars
         addIntVar(VAR_X_STAT, getCursor().getxBase());
