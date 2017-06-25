@@ -29,58 +29,46 @@ public class RootNode extends Node {
         setId(context.getNewRootNodeId());
 
         final RootView rootView = new RootView(xCenter, yCenter, getId(), context);
-        rootView.addOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (v.isFocused()) RootNode.this.context.setFocusedComponent(null);
-                else RootNode.this.context.setFocusedComponent(v);
-            }
+        rootView.addOnClickListener(v -> {
+            if (v.isFocused()) RootNode.this.context.setFocusedComponent(null);
+            else RootNode.this.context.setFocusedComponent(v);
         });
         registerMouseObserver(rootView);
         setProcessingView(rootView);
 
-        context.addOnFocusChangedListener(new OnFocusChangedListener() {
-            @Override
-            public void onFocusChanged(Component c) {
-                // delegate
-                rootView.onFocusChanged(c);
+        context.addOnFocusChangedListener(c -> {
+            // delegate
+            rootView.onFocusChanged(c);
 
-                if (rootView.isFocused()) {
-                    // show command node ui
-                    setChildNodeVisibility(true, new ArrayList<Node>());
-                } else {
-                    hideUI(new ArrayList<Node>());
-                }
+            if (rootView.isFocused()) {
+                // show command node ui
+                setChildNodeVisibility(true, new ArrayList<Node>());
+            } else {
+                hideUI(new ArrayList<Node>());
             }
         });
 
         final PlusButton plusButton = new PlusButton(rootView.getWidth() / 2, rootView.getHeight() / 2,
                 rootView.getWidth() / 2, rootView.getHeight() / 2, context);
-        plusButton.addOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // auto-focus this node
-                RootNode.this.context.setFocusedComponent(rootView);
+        plusButton.addOnClickListener(v -> {
+            // auto-focus this node
+            RootNode.this.context.setFocusedComponent(rootView);
 
-                CommandNode cmdNode = new CommandNode(RootNode.this, RootNode.this.context);
-                // only show the child nodes when this node is focused
-                cmdNode.setChildNodeVisibility(rootView.isFocused(), new ArrayList<Node>());
-                addNextNode(cmdNode);
-                rearrangeChildNodes(new ArrayList<Node>());
-            }
+            CommandNode cmdNode = new CommandNode(RootNode.this, RootNode.this.context);
+            // only show the child nodes when this node is focused
+            cmdNode.setChildNodeVisibility(rootView.isFocused(), new ArrayList<Node>());
+            addNextNode(cmdNode);
+            rearrangeChildNodes(new ArrayList<Node>());
         });
         rootView.addView(plusButton);
 
         final DeleteButton deleteButton = new DeleteButton(rootView.getWidth() / 2, 0,
                 rootView.getWidth() / 2, rootView.getHeight() / 2, context);
-        deleteButton.addOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // un-focus to hide the menu
-                if(rootView.isFocused()) RootNode.this.context.setFocusedComponent(null);
-                // mark the node as delted. This will also mark all sub-nodes as deleted
-                RootNode.this.context.onDelete(RootNode.this);
-            }
+        deleteButton.addOnClickListener(v -> {
+            // un-focus to hide the menu
+            if(rootView.isFocused()) RootNode.this.context.setFocusedComponent(null);
+            // mark the node as delted. This will also mark all sub-nodes as deleted
+            RootNode.this.context.onDelete(RootNode.this);
         });
         rootView.addView(deleteButton);
 
@@ -113,6 +101,14 @@ public class RootNode extends Node {
 
     public PaintContext getPaintContext() {
         return paintContext;
+    }
+
+    public void updatePosition(int x, int y) {
+        getProcessingView().setX(x);
+        getProcessingView().setY(y);
+        getMenuView().validateLocation();
+        rearrangeChildNodes(new ArrayList<>());
+
     }
 
     @Override

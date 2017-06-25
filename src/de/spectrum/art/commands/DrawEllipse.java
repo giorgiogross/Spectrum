@@ -1,8 +1,11 @@
 package de.spectrum.art.commands;
 
 import de.spectrum.App;
+import de.spectrum.art.ExpressionEvaluationHelper;
 import de.spectrum.art.Node;
 import de.spectrum.gui.java.UiCreationHelper;
+import net.objecthunter.exp4j.Expression;
+import net.objecthunter.exp4j.ExpressionBuilder;
 
 import javax.swing.*;
 import java.awt.*;
@@ -38,14 +41,10 @@ public class DrawEllipse extends Command {
         settingsInteractionPanel.add(UiCreationHelper
                 .createValueInputFieldPanel(new JLabel("Height:"), heightInput));
 
-        return UiCreationHelper.createSettingsContainer(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                inWidth = widthInput.getText();
-                inHeight = heightInput.getText();
-                attachedNode.getSettingsView().getView().dispatchEvent(
-                        new WindowEvent(attachedNode.getSettingsView().getView(), WindowEvent.WINDOW_CLOSING));
-            }
+        return UiCreationHelper.createSettingsContainer(e -> {
+            inWidth = widthInput.getText();
+            inHeight = heightInput.getText();
+            attachedNode.getSettingsView().setFrameVisibility(false);
         }, settingsInteractionPanel);
     }
 
@@ -56,11 +55,10 @@ public class DrawEllipse extends Command {
         if(paintContext.getCursor().isFill()) context.fill(paintContext.getCursor().getColor().getRGB());
         else context.noFill();
 
-        // todo parse the mathematical functions and set width, height and position accordingly
         try {
-            width = Integer.parseInt(inWidth);
-            height = Integer.parseInt(inHeight);
-        } catch (NumberFormatException e) {
+            width = (int)ExpressionEvaluationHelper.Evaluate(inWidth, paintContext);
+            height = (int)ExpressionEvaluationHelper.Evaluate(inHeight, paintContext);
+        } catch (IllegalArgumentException e) {
             // abort
             return;
         }

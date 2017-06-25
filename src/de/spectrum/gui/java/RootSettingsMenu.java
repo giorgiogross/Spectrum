@@ -84,46 +84,38 @@ public class RootSettingsMenu extends Component implements OnFocusChangedListene
                 .createNInputFieldPanel(colorDescription, colorR, colorG, colorB, colorA));
         settingsInteractionPanel.add(UiCreationHelper.createRightButtonPanel(
                 "ADD",
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        String descr = colorDescription.getText();
-                        String[] vals = {colorR.getText(), colorG.getText(), colorB.getText(), colorA.getText()};
+                e -> {
+                    String descr = colorDescription.getText();
+                    String[] vals = {colorR.getText(), colorG.getText(), colorB.getText(), colorA.getText()};
 
-                        boolean isOneWrong = false;
-                        for(String v : vals) {
-                            if(v.isEmpty() || !v.matches("\\b(1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\\b")) {
-                                isOneWrong = true;
-                                break;
-                            }
+                    boolean isOneWrong = false;
+                    for(String v : vals) {
+                        if(v.isEmpty() || !v.matches("\\b(1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\\b")) {
+                            isOneWrong = true;
+                            break;
                         }
-                        if (descr.isEmpty() || isOneWrong)
-                            return;
-
-                        paintContext.addColor(descr, new Color(
-                                Integer.parseInt(vals[0]),
-                                Integer.parseInt(vals[1]),
-                                Integer.parseInt(vals[2]),
-                                Integer.parseInt(vals[3])
-                        ));
-
-                        colorDescription.setText("");
-                        colorR.setText("");
-                        colorG.setText("");
-                        colorB.setText("");
-                        colorA.setText("");
-                        validatePanels();
                     }
+                    if (descr.isEmpty() || isOneWrong)
+                        return;
+
+                    paintContext.addColor(descr, new Color(
+                            Integer.parseInt(vals[0]),
+                            Integer.parseInt(vals[1]),
+                            Integer.parseInt(vals[2]),
+                            Integer.parseInt(vals[3])
+                    ));
+
+                    colorDescription.setText("");
+                    colorR.setText("");
+                    colorG.setText("");
+                    colorB.setText("");
+                    colorA.setText("");
+                    validatePanels();
                 })
         );
 
         settingsMenu = new NodeSettingsMenu(context, getView(),
-                UiCreationHelper.createSettingsContainer(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        settingsMenu.getView().dispatchEvent(new WindowEvent(settingsMenu.getView(), WindowEvent.WINDOW_CLOSING));
-                    }
-                }, settingsInteractionPanel)
+                UiCreationHelper.createSettingsContainer(e -> setFrameVisibility(false), settingsInteractionPanel)
         );
     }
 
@@ -156,7 +148,6 @@ public class RootSettingsMenu extends Component implements OnFocusChangedListene
     private void updateVarsPanel(Box varsPanel) {
         HashMap<String, Integer> intVars = paintContext.getIntVars();
         HashMap<String, Float> floatVars = paintContext.getFloatVars();
-        int numVars = intVars.size() + paintContext.getFloatVars().size();
 
         JLabel title = new JLabel("Variables");
         title.setAlignmentY(java.awt.Component.TOP_ALIGNMENT);
@@ -176,12 +167,9 @@ public class RootSettingsMenu extends Component implements OnFocusChangedListene
                     .createValueValuePanel(new JLabel(key + ": "), new JLabel("" + paintContext.getIntVar(key)), delListener));
         }
         for (final String key : floatVars.keySet()) {
-            ActionListener delListener = new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    paintContext.removeFloatVar(key);
-                    validatePanels();
-                }
+            ActionListener delListener = e -> {
+                paintContext.removeFloatVar(key);
+                validatePanels();
             };
             varsPanel.add(UiCreationHelper
                     .createValueValuePanel(new JLabel(key + ": "), new JLabel("" + paintContext.getFloatVar(key)), delListener));
@@ -199,7 +187,7 @@ public class RootSettingsMenu extends Component implements OnFocusChangedListene
     }
 
     /**
-     * Re-creates all content panels so that they show the latest data
+     * Update all content panels so that they show the latest data
      */
     private void validatePanels() {
         varsPanel.removeAll();

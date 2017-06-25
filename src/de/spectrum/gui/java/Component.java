@@ -3,6 +3,7 @@ package de.spectrum.gui.java;
 import de.spectrum.App;
 
 import javax.swing.*;
+import java.awt.event.WindowEvent;
 
 /**
  * Java swing component. Just a class to hide the actual swing component. Via this class general data like the size
@@ -34,6 +35,7 @@ public class Component {
 
     public void setFrameVisibility(boolean isVisible) {
         if (ui != null && ui.isVisible() != isVisible) ui.setVisible(isVisible);
+        if(ui != null && !isVisible) ui.dispose();
     }
 
 }

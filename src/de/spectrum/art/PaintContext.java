@@ -3,6 +3,7 @@ package de.spectrum.art;
 import de.spectrum.art.toolbox.Cursor;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -30,6 +31,8 @@ public class PaintContext {
     public PaintContext(RootNode rootNode, int xBase, int yBase) {
         this.attachedNode = rootNode;
         cursor = new Cursor(xBase, yBase);
+
+        // todo remember to update cursor when x_stat or x_loc is changed through VarUpdateCmd.
 
         intVars = new HashMap<String, Integer>();
         floatVars = new HashMap<String, Float>();
@@ -84,12 +87,12 @@ public class PaintContext {
 
         // update root node ui position if it is updated
         if(id.equals(VAR_X_STAT)) {
-            attachedNode.getProcessingView().setX(i);
-            attachedNode.getMenuView().validateLocation();
+            attachedNode.updatePosition(i, cursor.getyBase());
+            cursor.relocateBase(i, cursor.getyBase());
         }
         if(id.equals(VAR_Y_STAT)) {
-            attachedNode.getProcessingView().setY(i);
-            attachedNode.getMenuView().validateLocation();
+            attachedNode.updatePosition(cursor.getxBase(), i);
+            cursor.relocateBase(cursor.getxBase(), i);
         }
     }
 
