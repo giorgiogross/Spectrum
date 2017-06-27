@@ -39,6 +39,7 @@ public class App extends PApplet implements OnMenuActionListener {
     private int rootNodeIdCounter = 0;
 
     private int FPS = 30;
+    private long cycleTime = 34;
 
     /**
      * Starts up the app
@@ -72,6 +73,8 @@ public class App extends PApplet implements OnMenuActionListener {
 
     @Override
     public void draw() {
+        long then = System.currentTimeMillis();
+
         // handle background
         background(0);
 
@@ -99,8 +102,11 @@ public class App extends PApplet implements OnMenuActionListener {
             root.drawUI(new ArrayList<Node>());
         }
 
-        try {
-            Thread.sleep(33);
+        // sleep so that we reach approx. the desired FPS
+        long now = System.currentTimeMillis();
+        long sleepTime = cycleTime - (now - then);
+        if (sleepTime > 0) try {
+            Thread.sleep(sleepTime);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -263,6 +269,7 @@ public class App extends PApplet implements OnMenuActionListener {
 
     public void setFPS(int FPS) {
         this.FPS = FPS;
+        this.cycleTime = 1000 / FPS;
     }
 
     public int getNewRootNodeId() {
