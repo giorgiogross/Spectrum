@@ -13,7 +13,7 @@ public class UiCreationHelper {
     public static int SETTINGS_UI_WIDTH = 400;
     public static int SETTINGS_UI_HEIGHT = 500;
     public static int BORDER_SIZE = 10;
-    public static int UI_ROW_HEIGHT = 25;
+    public static int UI_ROW_HEIGHT = 28;
 
 
     public static Box createValueValuePanel(JLabel valueDescription, JLabel value, ActionListener deleteAction) {
@@ -99,4 +99,19 @@ public class UiCreationHelper {
         return panel;
     }
 
+    public static Box createEmptyHorizontalBox() {
+        Box panel = Box.createHorizontalBox();
+        panel.setPreferredSize(new Dimension(SETTINGS_UI_WIDTH - BORDER_SIZE * 2, UI_ROW_HEIGHT * 2));
+        panel.setMaximumSize(new Dimension(Integer.MAX_VALUE, UI_ROW_HEIGHT));
+        panel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        return panel;
+    }
+
+    public static Box createEmptyVerticalBox() {
+        Box panel = Box.createVerticalBox();
+        panel.setPreferredSize(new Dimension(SETTINGS_UI_WIDTH - BORDER_SIZE * 2, UI_ROW_HEIGHT * 2));
+        panel.setMaximumSize(new Dimension(Integer.MAX_VALUE, UI_ROW_HEIGHT));
+        panel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        return panel;
+    }
 }

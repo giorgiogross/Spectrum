@@ -96,6 +96,10 @@ public class RootNode extends Node implements OnPaintContextChangedListener {
         if (currentFrame > 0) currentFrame--;
     }
 
+    public void incCurrentFrame() {
+        currentFrame++;
+    }
+
     public void deleteCommandNode(Node commandNode) {
         commandNode.delete();
     }
@@ -115,7 +119,7 @@ public class RootNode extends Node implements OnPaintContextChangedListener {
 
     @Override
     protected void render() {
-        // do nothing
+        incCurrentFrame();
     }
 
     @Override

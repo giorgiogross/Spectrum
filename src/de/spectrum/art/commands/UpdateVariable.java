@@ -17,8 +17,11 @@ public class UpdateVariable extends Command implements OnPaintContextChangedList
     public static final String DESCRIPTION = "Variable Manipulation";
 
     private Component content;
+    private JComboBox varSel;
+
     private String target = null;
     private String value = null;
+    private ArrayList<String> vars;
 
     public UpdateVariable(App context, Node attachedNode) {
         super(context, attachedNode, DESCRIPTION);
@@ -27,21 +30,49 @@ public class UpdateVariable extends Command implements OnPaintContextChangedList
 
     @Override
     public Component getConfigurationPanel() {
-        Box panel = Box.createHorizontalBox();
+        Box panel = UiCreationHelper.createEmptyHorizontalBox();
 
-        ArrayList<String> vars = new ArrayList<>(paintContext.getIntVars().keySet());
-        vars.addAll(paintContext.getFloatVars().keySet());
-
-        JComboBox varSel = new JComboBox(vars.toArray());
+        varSel = new JComboBox<String>();
         JTextField input = new JTextField();
         panel.add(varSel);
         panel.add(input);
 
+        updateVarsView();
+
         content = UiCreationHelper.createSettingsContainer(e -> {
-            target = (String) varSel.getSelectedItem();
-            value = input.getText();
+            selectVariable(varSel.getSelectedIndex(), input.getText());
+            attachedNode.getSettingsView().setFrameVisibility(false);
         }, panel);
         return content;
+    }
+
+    private void selectVariable(int selectedIndex, String input) {
+        if(selectedIndex == 0) target = null;
+        else target = (String) varSel.getItemAt(selectedIndex);
+        value = input;
+    }
+
+    private void updateVarsView() {
+        vars = new ArrayList<>(paintContext.getIntVars().keySet());
+        vars.addAll(paintContext.getFloatVars().keySet());
+        vars.add(0, "None");
+
+        String oldSelection = (String) varSel.getSelectedItem();
+        int oldIndex = varSel.getSelectedIndex();
+
+        varSel.setModel(new DefaultComboBoxModel<>(vars.toArray()));
+        if(oldIndex > 0) {
+            int idx = vars.indexOf(oldSelection);
+            if (idx == -1) {
+                // element was deleted, remove selection
+                selectVariable(0, null);
+            } else {
+                // update selected index, no changes needed for cached values...
+                varSel.setSelectedIndex(idx);  // + 1 because of 0th element
+            }
+        } else {
+            selectVariable(0, null);
+        }
     }
 
     @Override
@@ -57,6 +88,6 @@ public class UpdateVariable extends Command implements OnPaintContextChangedList
 
     @Override
     public void onPaintContextChanged() {
-        // todo update combo box
+        updateVarsView();
     }
 }

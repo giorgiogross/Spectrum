@@ -72,7 +72,7 @@ public abstract class Node {
      * other nodes will be called. If this is the root node these steps will always be executed.
      */
     public void draw(ArrayList<Node> scannedNodes) {
-        if (root != null && renderAtFrame < root.getCurrentFrame()) {
+        if (root != null && root.getCurrentFrame() <= renderAtFrame) {
             // do not render this node yet
             return;
         }

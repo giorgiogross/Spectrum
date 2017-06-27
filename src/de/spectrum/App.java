@@ -76,7 +76,7 @@ public class App extends PApplet implements OnMenuActionListener {
         background(0);
 
         // handle play/pause state
-        if(!isPaused) {
+        if (!isPaused) {
             // draw all artworks
             for (RootNode root : roots) {
                 root.draw(new ArrayList<Node>());
@@ -90,7 +90,7 @@ public class App extends PApplet implements OnMenuActionListener {
         // handle processing UI's
         for (Iterator<RootNode> iter = roots.iterator(); iter.hasNext(); ) {
             RootNode root = iter.next();
-            if(root.isMarkedAsDeleted()) {
+            if (root.isMarkedAsDeleted()) {
                 // remove the obsolete node
                 roots.remove(root);
                 return;
@@ -98,13 +98,19 @@ public class App extends PApplet implements OnMenuActionListener {
 
             root.drawUI(new ArrayList<Node>());
         }
+
+        try {
+            Thread.sleep(33);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void keyTyped() {
         if (key == 'm') {
             showUI = !showUI;
-            if(showUI) onPause();
+            if (showUI) onPause();
             else onPlay();
         }
 
@@ -166,7 +172,7 @@ public class App extends PApplet implements OnMenuActionListener {
 
         final JFrame frame = new JFrame(title);
         frame.setLocationRelativeTo(null);
-        frame.setLocation((int)width - UiCreationHelper.SETTINGS_UI_WIDTH, (int)height - UiCreationHelper.SETTINGS_UI_HEIGHT);
+        frame.setLocation((int) width - UiCreationHelper.SETTINGS_UI_WIDTH, (int) height - UiCreationHelper.SETTINGS_UI_HEIGHT);
         frame.setSize(UiCreationHelper.SETTINGS_UI_WIDTH, UiCreationHelper.SETTINGS_UI_HEIGHT);
         frame.setFocusable(false);
         frame.setAlwaysOnTop(true);
@@ -243,7 +249,7 @@ public class App extends PApplet implements OnMenuActionListener {
         return frame;
     }
 
-    public void addGeneratedRootNode (RootNode generatedRoot) {
+    public void addGeneratedRootNode(RootNode generatedRoot) {
         this.generatedRoots.add(generatedRoot);
     }
 
@@ -309,17 +315,17 @@ public class App extends PApplet implements OnMenuActionListener {
 
     @Override
     public void onSetLayer(RootNode rootNode, int layer) {
-        if(layer < 0) return;
+        if (layer < 0) return;
 
         rootNode.setLayer(layer);
         sortRootsArray();
 
-        ((RootMenu)rootNode.getMenuView()).updateLayerNumber();
+        ((RootMenu) rootNode.getMenuView()).updateLayerNumber();
     }
 
     @Override
     public void onSetFPS(int newFPS) {
-        if(newFPS < 1) return;
+        if (newFPS < 1) return;
 
         setFPS(newFPS);
         ((AppController) appController).updateFPSPNumber();
