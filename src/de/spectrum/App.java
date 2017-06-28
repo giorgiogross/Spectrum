@@ -88,6 +88,7 @@ public class App extends PApplet implements OnMenuActionListener {
                 root.draw(new ArrayList<Node>());
             }
         }
+        // todo pausing should just freeze the animations instead of hiding all of them
 
         if (!showUI) return; // for performance reasons. App will still work without this line
         // handle processing UI's

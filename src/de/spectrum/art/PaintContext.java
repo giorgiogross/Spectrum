@@ -89,11 +89,28 @@ public class PaintContext {
     public void addIntVar(String id, int i) {
         intVars.put(id, i);
 
+        // update root position if necessary
         if (id.equals(VAR_X_STAT)) {
             cursor.relocateBase(i, cursor.getyBase());
+            addIntVar(VAR_X_GLOB, getCursor().getX());
         }
         if (id.equals(VAR_Y_STAT)) {
             cursor.relocateBase(cursor.getxBase(), i);
+            addIntVar(VAR_Y_GLOB, getCursor().getY());
+        }
+        if (id.equals(VAR_X_GLOB)) {
+            getCursor().relocate(i, getCursor().getY());
+            addIntVar(VAR_X_LOC, getCursor().getxBase() - getCursor().getX());
+        }
+        if (id.equals(VAR_Y_GLOB)) {
+            getCursor().relocate(getCursor().getX(), i);
+            addIntVar(VAR_Y_LOC, getCursor().getyBase() - getCursor().getY());
+        }
+        if (id.equals(VAR_X_LOC)) {
+            getCursor().relocate(i, getCursor().getY());
+        }
+        if (id.equals(VAR_Y_LOC)) {
+            getCursor().relocate(i, getCursor().getY());
         }
 
         notifyPaintContextChanged();

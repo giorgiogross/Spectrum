@@ -179,6 +179,7 @@ public abstract class Node {
 
     public void setPaused(boolean paused) {
         // todo remember to not execute variables manipulation and frame number increasement when paused
+        // todo add a button to hide the whole three and its rendering results temporarily
         isPaused = paused;
     }
 
@@ -304,7 +305,7 @@ public abstract class Node {
     protected int getSubTreeWidth(ArrayList<Node> scannedNodes) {
         int width = 0;
 
-        if (ptrNext.size() == 0) width = 1;
+        if (ptrNext.size() == 0 || onlyLinksToScannedNodes(scannedNodes)) width = 1;
         else for (Node n : ptrNext) {
             if (scannedNodes.contains(n)) continue;
             scannedNodes.add(n);
@@ -316,6 +317,13 @@ public abstract class Node {
         }
 
         return width;
+    }
+
+    private boolean onlyLinksToScannedNodes(ArrayList<Node> scannedNodes) {
+        for (Node n : ptrNext) {
+            if(!scannedNodes.contains(n)) return false;
+        }
+        return true;
     }
 
     public void delete() {

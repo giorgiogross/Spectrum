@@ -11,6 +11,10 @@ public class Cursor {
 
     private int xBase = 0;
     private int yBase = 0;
+
+    /**
+     * Local x and y values; xBase & yBase are the center
+     */
     private int x = 0;
     private int y = 0;
 
