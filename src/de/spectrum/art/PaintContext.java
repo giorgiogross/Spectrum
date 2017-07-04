@@ -35,8 +35,6 @@ public class PaintContext {
         this.attachedNode = rootNode;
         cursor = new Cursor(xBase, yBase);
 
-        // todo remember to update cursor when x_stat or x_loc is changed through VarUpdateCmd.
-
         intVars = new LinkedHashMap<>();
         floatVars = new LinkedHashMap<>();
         colors = new LinkedHashMap<>();

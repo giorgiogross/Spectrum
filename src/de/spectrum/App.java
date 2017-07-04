@@ -121,6 +121,10 @@ public class App extends PApplet implements OnMenuActionListener {
             else onPlay();
         }
 
+        if (key == 'e') {
+            save("/Users/Giorgio/Documents/Eigene Projekte/Spectrum/artworks/spectrum-" + System.currentTimeMillis() + ".jpeg");
+        }
+
         appController.setFrameVisibility(showUI);
 
         for (RootNode root : roots) {

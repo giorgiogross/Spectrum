@@ -179,7 +179,7 @@ public abstract class Node {
 
     public void setPaused(boolean paused) {
         // todo remember to not execute variables manipulation and frame number increasement when paused
-        // todo add a button to hide the whole three and its rendering results temporarily
+        // todo add a button to hide the whole tree and its rendering results temporarily
         isPaused = paused;
     }
 
@@ -302,7 +302,7 @@ public abstract class Node {
      * @param scannedNodes all nodes which were already scanned
      * @return width or the new number of child nodes, if it's larger than width
      */
-    protected int getSubTreeWidth(ArrayList<Node> scannedNodes) {
+    protected int getSubTreeWidth(ArrayList<Node> scannedNodes) { // todo linking to other sub-trees is not recognized yet
         int width = 0;
 
         if (ptrNext.size() == 0 || onlyLinksToScannedNodes(scannedNodes)) width = 1;
