@@ -11,7 +11,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 /**
- * Created by Giorgio on 26.06.17.
+ * Updates the value of a defined variable
  */
 public class UpdateVariable extends Command implements OnPaintContextChangedListener{
     public static final String DESCRIPTION = "Variable Manipulation";

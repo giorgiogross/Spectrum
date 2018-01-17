@@ -14,6 +14,11 @@ public class CommandRegistry {
             put(NullCommand.DESCRIPTION, NullCommand.class);
             put(DrawEllipse.DESCRIPTION, DrawEllipse.class);
             put(UpdateVariable.DESCRIPTION, UpdateVariable.class);
+
+            // random number generation with option to only generate number once
+            // add any root where cursor is located
+            // edit background (refresh y/n, color)
+            // determine if someting will overdraw another item
         }
     };
 
