@@ -6,8 +6,8 @@ import java.awt.*;
  * Class to represent the currently used color, position, stroke and fill state.
  */
 public class Cursor {
-    //inti with default values
-    private Color color = new Color(222, 222, 0, 255);
+    //init with default values
+    private Color color = new Color(255, 255, 255, 255);
 
     private int xBase = 0;
     private int yBase = 0;
@@ -66,11 +66,19 @@ public class Cursor {
         return yBase;
     }
 
-    public int getX() {
+    public int getXRaw() {
+        return x;
+    }
+
+    public int getYRaw() {
+        return y;
+    }
+
+    public int getXLocation() {
         return x + xBase;
     }
 
-    public int getY() {
+    public int getYLocation() {
         return y + yBase;
     }
 

@@ -64,8 +64,8 @@ public class DrawEllipse extends Command {
         }
 
         context.ellipse(
-                paintContext.getCursor().getX(),
-                paintContext.getCursor().getY(),
+                paintContext.getCursor().getXLocation(),
+                paintContext.getCursor().getYLocation(),
                 width,
                 height
         );

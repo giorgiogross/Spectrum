@@ -68,7 +68,7 @@ public class UpdateVariable extends Command implements OnPaintContextChangedList
                 selectVariable(0, null);
             } else {
                 // update selected index, no changes needed for cached values...
-                varSel.setSelectedIndex(idx);  // + 1 because of 0th element
+                varSel.setSelectedIndex(idx);
             }
         } else {
             selectVariable(0, null);

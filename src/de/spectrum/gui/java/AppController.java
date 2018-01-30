@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
  */
 public class AppController extends Component {
     private JButton bPlay;
+    private JButton bPause;
     private JButton bDelete;
     private JButton bRevert;
     private JButton bFPSUp;
@@ -26,7 +27,7 @@ public class AppController extends Component {
         FlowLayout layout = new FlowLayout();
         getView().setLayout(layout);
 
-        bPlay = new JButton("∆");
+        bPlay = new JButton("Play");
         bPlay.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -34,6 +35,15 @@ public class AppController extends Component {
             }
         });
         getView().add(bPlay);
+
+        bPause = new JButton("Pause");
+        bPause.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AppController.this.context.onPause();
+            }
+        });
+        getView().add(bPause);
 
         bDelete = new JButton("NEW");
         bDelete.addActionListener(new ActionListener() {
@@ -44,7 +54,8 @@ public class AppController extends Component {
         });
         getView().add(bDelete);
 
-        bRevert = new JButton("«");
+        /*
+        bRevert = new JButton("Revert Frame");
         bRevert.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -52,6 +63,7 @@ public class AppController extends Component {
             }
         });
         getView().add(bRevert);
+        */
 
         bFPSUp = new JButton("+");
         bFPSUp.addActionListener(new ActionListener() {
@@ -62,7 +74,7 @@ public class AppController extends Component {
         });
         getView().add(bFPSUp);
 
-        lFPS = new JLabel("" + AppController.this.context.getFPS());
+        lFPS = new JLabel("FPS: " + AppController.this.context.getFPS());
         getView().add(lFPS);
 
         bFPSDown = new JButton("-");
@@ -86,6 +98,6 @@ public class AppController extends Component {
     }
 
     public void updateFPSPNumber() {
-        lFPS.setText("" + context.getFPS());
+        lFPS.setText("FPS: " + context.getFPS());
     }
 }

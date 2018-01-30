@@ -122,7 +122,7 @@ public class App extends PApplet implements OnMenuActionListener {
         }
 
         if (key == 'e') {
-            save("/Users/Giorgio/Documents/Eigene Projekte/Spectrum/artworks/spectrum-" + System.currentTimeMillis() + ".jpeg");
+            onExport();
         }
 
         appController.setFrameVisibility(showUI);
@@ -346,27 +346,28 @@ public class App extends PApplet implements OnMenuActionListener {
 
     @Override
     public void onSetFrameNumber(int num) {
-
+        // TODO
     }
 
     @Override
     public void onExport() {
-
+        // TODO check if dir exists and hide app uis!
+        save(System.getProperty("user.dir")+"/artworks/spectrum-" + System.currentTimeMillis() + ".jpeg");
     }
 
     @Override
     public void onSafe() {
-
+        // TODO save app state to file (+todo load app state from file configuration)
     }
 
     @Override
     public void onEditSettings() {
-
+        // TODO
     }
 
     @Override
     public void onEditSettings(RootNode node) {
-
+        // TODO
     }
 
     private void sortRootsArray() {

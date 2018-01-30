@@ -14,13 +14,11 @@ import java.util.LinkedHashMap;
 public class PaintContext {
     private ArrayList<OnPaintContextChangedListener> listeners = new ArrayList<>();
 
-    // basic variables
-    public static final String VAR_X_STAT = "x_stat";
-    public static final String VAR_Y_STAT = "y_stat";
-    public static final String VAR_X_GLOB = "x_glob";
-    public static final String VAR_Y_GLOB = "y_glob";
-    public static final String VAR_X_LOC = "x_loc";
-    public static final String VAR_Y_LOC = "y_loc";
+    // variables available per default
+    public static final String VAR_X_ROOT = "x_root";  // static x position of root node
+    public static final String VAR_Y_ROOT = "y_root";  // static y position of root node
+    public static final String VAR_X_LOC = "x_loc";  // local cursor x position
+    public static final String VAR_Y_LOC = "y_loc";  // local cursor y position
     public static final String COLOR_BLACK = "cl_black";
     public static final String COLOR_WHITE = "cl_white";
 
@@ -40,12 +38,11 @@ public class PaintContext {
         colors = new LinkedHashMap<>();
 
         // init static vars
-        addIntVar(VAR_X_STAT, getCursor().getxBase());
-        addIntVar(VAR_X_GLOB, getCursor().getX());
-        addIntVar(VAR_X_LOC, getCursor().getxBase() - getCursor().getX());
-        addIntVar(VAR_Y_STAT, getCursor().getyBase());
-        addIntVar(VAR_Y_GLOB, getCursor().getY());
-        addIntVar(VAR_Y_LOC, getCursor().getyBase() - getCursor().getY());
+        intVars.put(VAR_X_ROOT, getCursor().getxBase());
+        intVars.put(VAR_X_LOC, 0);
+        intVars.put(VAR_Y_ROOT, getCursor().getyBase());
+        intVars.put(VAR_Y_LOC, 0);
+        notifyPaintContextChanged();
 
         addColor(COLOR_BLACK, new Color(0, 0, 0, 255));
         addColor(COLOR_WHITE, new Color(255, 255, 255, 255));
@@ -84,31 +81,27 @@ public class PaintContext {
         notifyPaintContextChanged();
     }
 
+    /**
+     * Adds a new integer variable with id and value i or overrides an existing one with same id.
+     *
+     * @param id Identifier for variable
+     * @param i  Value
+     */
     public void addIntVar(String id, int i) {
         intVars.put(id, i);
 
-        // update root position if necessary
-        if (id.equals(VAR_X_STAT)) {
+        // update root position if necessary if existing static variable was overridden
+        if (id.equals(VAR_X_ROOT)) {
             cursor.relocateBase(i, cursor.getyBase());
-            addIntVar(VAR_X_GLOB, getCursor().getX());
         }
-        if (id.equals(VAR_Y_STAT)) {
+        if (id.equals(VAR_Y_ROOT)) {
             cursor.relocateBase(cursor.getxBase(), i);
-            addIntVar(VAR_Y_GLOB, getCursor().getY());
-        }
-        if (id.equals(VAR_X_GLOB)) {
-            getCursor().relocate(i, getCursor().getY());
-            addIntVar(VAR_X_LOC, getCursor().getxBase() - getCursor().getX());
-        }
-        if (id.equals(VAR_Y_GLOB)) {
-            getCursor().relocate(getCursor().getX(), i);
-            addIntVar(VAR_Y_LOC, getCursor().getyBase() - getCursor().getY());
         }
         if (id.equals(VAR_X_LOC)) {
-            getCursor().relocate(i, getCursor().getY());
+            getCursor().relocate(i, getCursor().getYRaw());
         }
         if (id.equals(VAR_Y_LOC)) {
-            getCursor().relocate(i, getCursor().getY());
+            getCursor().relocate(getCursor().getXRaw(), i);
         }
 
         notifyPaintContextChanged();
