@@ -9,6 +9,8 @@ import java.awt.*;
 
 /**
  * Abstract command. Superclass of all commands.
+ *
+ * @author Giorgio Gross <lars.ordsen@gmail.com>
  */
 public abstract class Command {
     protected App context;

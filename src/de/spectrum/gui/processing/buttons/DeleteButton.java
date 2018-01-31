@@ -5,7 +5,7 @@ import de.spectrum.gui.processing.View;
 import processing.core.PApplet;
 
 /**
- * Created by Giorgio on 07.05.17.
+ * @author Giorgio Gross <lars.ordsen@gmail.com>
  */
 public class DeleteButton extends View {
     public DeleteButton(int x, int y, int width, int height, App context) {

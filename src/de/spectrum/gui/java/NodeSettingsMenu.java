@@ -15,7 +15,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 /**
- * Created by Giorgio on 23.05.17.
+ * @author Giorgio Gross <lars.ordsen@gmail.com>
  */
 public class NodeSettingsMenu extends Component {
     private JScrollPane scroller = null;

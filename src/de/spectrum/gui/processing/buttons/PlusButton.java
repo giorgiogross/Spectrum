@@ -5,7 +5,7 @@ import de.spectrum.gui.processing.View;
 import processing.core.PApplet;
 
 /**
- * Created by Giorgio on 07.05.17.
+ * @author Giorgio Gross <lars.ordsen@gmail.com>
  */
 public class PlusButton extends View {
 

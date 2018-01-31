@@ -4,6 +4,8 @@ import java.awt.*;
 
 /**
  * Class to represent the currently used color, position, stroke and fill state.
+ *
+ * @author Giorgio Gross <lars.ordsen@gmail.com>
  */
 public class Cursor {
     //init with default values

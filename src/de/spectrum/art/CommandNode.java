@@ -18,7 +18,7 @@ import java.awt.*;
 import java.awt.event.WindowEvent;
 
 /**
- * Created by Giorgio on 03.05.17.
+ * @author Giorgio Gross <lars.ordsen@gmail.com>
  */
 public class CommandNode extends Node {
     private NodeAdder adderView;

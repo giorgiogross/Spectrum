@@ -8,6 +8,8 @@ import java.awt.event.WindowEvent;
 /**
  * Java swing component. Just a class to hide the actual swing component. Via this class general data like the size
  * of the component can be read by the client without needing to know what UI this component actually represents.
+ *
+ * @author Giorgio Gross <lars.ordsen@gmail.com>
  */
 public class Component {
     protected JFrame ui;

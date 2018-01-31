@@ -9,6 +9,8 @@ import java.util.ArrayList;
 
 /**
  * View inclusive event handler for mouse events to represent a processing UI element.
+ *
+ * @author Giorgio Gross <lars.ordsen@gmail.com>
  */
 public abstract class View extends Component implements MouseObserver {
     protected App context;

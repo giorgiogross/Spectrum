@@ -13,6 +13,9 @@ import java.util.Iterator;
  * Node of the art rendering graph. The render graph is the linked list which determines when a certain rule will be
  * rendered. Nodes can encapsulate rules, switches, mathematical expressions and more and will be rendered as soon as
  * the currentFrame value of the root node from which this node originated reaches this nodes' renderAtFrame value.
+ *
+ *
+ * @author Giorgio Gross <lars.ordsen@gmail.com>
  */
 public abstract class Node {
     /**

@@ -11,7 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * Created by Giorgio on 08.05.17.
+ * @author Giorgio Gross <lars.ordsen@gmail.com>
  */
 public class RootMenu extends Component implements OnFocusChangedListener {
     private RootNode attachedNode;

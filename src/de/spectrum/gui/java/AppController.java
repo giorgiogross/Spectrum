@@ -10,6 +10,8 @@ import java.awt.event.ActionListener;
 /**
  * JPanel which shows the main UI controls to control fps, current frame, deletion, recreation, play, pause and related
  * global actions.
+ *
+ * @author Giorgio Gross <lars.ordsen@gmail.com>
  */
 public class AppController extends Component {
     private JButton bPlay;

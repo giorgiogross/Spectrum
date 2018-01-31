@@ -3,7 +3,7 @@ package de.spectrum.gui;
 import de.spectrum.art.RootNode;
 
 /**
- * Created by Giorgio on 09.05.17.
+ * @author Giorgio Gross <lars.ordsen@gmail.com>
  */
 public interface OnMenuActionListener {
 

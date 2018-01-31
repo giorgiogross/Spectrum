@@ -20,6 +20,8 @@ import static de.spectrum.gui.java.UiCreationHelper.UI_ROW_HEIGHT;
 
 /**
  * Command used as placeholder. Shows UI to select actual Command to be used with the attached Node.
+ *
+ * @author Giorgio Gross <lars.ordsen@gmail.com>
  */
 public class SelectionCommand extends Command {
     public static final String DESCRIPTION = "Select Command";

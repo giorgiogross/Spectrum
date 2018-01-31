@@ -14,7 +14,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 
 /**
- * Created by Giorgio on 20.05.17.
+ * @author Giorgio Gross <lars.ordsen@gmail.com>
  */
 public class DrawEllipse extends Command {
     public static final String DESCRIPTION = "Ellipse";

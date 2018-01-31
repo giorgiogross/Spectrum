@@ -11,7 +11,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 /**
- * Created by Giorgio on 26.06.17.
+ * @author Giorgio Gross <lars.ordsen@gmail.com>
  */
 public class UpdateVariable extends Command implements OnPaintContextChangedListener{
     public static final String DESCRIPTION = "Variable Manipulation";

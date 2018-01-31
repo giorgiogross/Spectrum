@@ -2,6 +2,8 @@ package de.spectrum.gui;
 
 /**
  * Observer wchich is notified about mouse events
+ *
+ * @author Giorgio Gross <lars.ordsen@gmail.com>
  */
 public interface MouseObserver {
 

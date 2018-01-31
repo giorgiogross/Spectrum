@@ -18,6 +18,8 @@ import java.util.ArrayList;
 
 /**
  * Encapsulates all data structures and methods linked with a root node.
+ *
+ * @author Giorgio Gross <lars.ordsen@gmail.com>
  */
 public class RootNode extends Node implements OnPaintContextChangedListener {
     private int currentFrame = 0;

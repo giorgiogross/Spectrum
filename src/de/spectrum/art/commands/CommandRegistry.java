@@ -6,7 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Created by Giorgio on 23.05.17.
+ * @author Giorgio Gross <lars.ordsen@gmail.com>
  */
 public class CommandRegistry {
     public static LinkedHashMap<String, Class<? extends Command>> registry = new LinkedHashMap<String, Class<? extends Command>>() {

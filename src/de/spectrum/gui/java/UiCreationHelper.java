@@ -7,7 +7,7 @@ import java.awt.Component;
 import java.awt.event.ActionListener;
 
 /**
- * Created by Giorgio on 25.05.17.
+ * @author Giorgio Gross <lars.ordsen@gmail.com>
  */
 public class UiCreationHelper {
     public static int SETTINGS_UI_WIDTH = 400;

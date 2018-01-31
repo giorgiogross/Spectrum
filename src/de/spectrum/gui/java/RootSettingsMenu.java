@@ -13,7 +13,7 @@ import java.awt.event.WindowEvent;
 import java.util.HashMap;
 
 /**
- * Created by Giorgio on 19.06.17.
+ * @author Giorgio Gross <lars.ordsen@gmail.com>
  */
 public class RootSettingsMenu extends Component implements OnFocusChangedListener, OnPaintContextChangedListener {
     private RootNode attachedNode;

@@ -12,7 +12,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 /**
- * Created by Giorgio on 15.05.17.
+ * @author Giorgio Gross <lars.ordsen@gmail.com>
  */
 public class NodeAdder extends Component {
     private Node attachedNode;

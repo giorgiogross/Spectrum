@@ -23,7 +23,7 @@ import java.util.Iterator;
  * RootView class for the Spectrum App. Here happens initialization, kick off of rendering, management of UI's and
  * delegation of generative art creation.
  *
- * @author Giorgio
+ * @author Giorgio Gross <lars.ordsen@gmail.com>
  */
 public class App extends PApplet implements OnMenuActionListener {
     /**

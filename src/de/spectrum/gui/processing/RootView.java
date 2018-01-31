@@ -6,6 +6,8 @@ import de.spectrum.gui.java.Component;
 
 /**
  * View which shows the root of an command object.
+ *
+ * @author Giorgio Gross <lars.ordsen@gmail.com>
  */
 public class RootView extends View implements OnFocusChangedListener {
     private int rootId = -1;

@@ -3,7 +3,7 @@ package de.spectrum.gui.processing;
 import de.spectrum.App;
 
 /**
- * Created by Giorgio on 13.05.17.
+ * @author Giorgio Gross <lars.ordsen@gmail.com>
  */
 public class CommandView extends View {
     private int commandId = -1;

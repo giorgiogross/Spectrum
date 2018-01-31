@@ -7,7 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Created by Giorgio on 25.06.17.
+ * @author Giorgio Gross <lars.ordsen@gmail.com>
  */
 public class NullCommand extends Command {
 

@@ -11,6 +11,8 @@ import java.util.stream.Stream;
 
 /**
  * Evaluate mathematical expressions.
+ *
+ * @author Giorgio Gross <lars.ordsen@gmail.com>
  */
 public class ExpressionEvaluationHelper {
 
